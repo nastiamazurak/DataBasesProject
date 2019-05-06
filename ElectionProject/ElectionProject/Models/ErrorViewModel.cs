@@ -1,6 +1,6 @@
 using System;
 
-namespace ElectionsProject.Models
+namespace ElectionProject.Models
 {
     public class ErrorViewModel
     {

@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ElectionsProject.Models;
+using ElectionProject.Models;
 
-namespace ElectionsProject.Controllers
+namespace ElectionProject.Controllers
 {
     public class HomeController : Controller
     {
