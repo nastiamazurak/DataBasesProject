@@ -32,8 +32,8 @@ namespace ElectionProject
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            //services.AddDbContext<ElectionContext>(options =>
-            //        options.UseNpgsql(Configuration.GetConnectionString("ElectionDatabase")));
+            services.AddDbContext<ElectionContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("ElectionDatabase")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
