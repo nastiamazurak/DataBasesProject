@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ElectionProject.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -34,6 +35,11 @@ namespace ElectionProject
 
             services.AddDbContext<ElectionContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("ElectionDatabase")));
+
+            //services.AddEntityFrameworkNpgsql()
+            //   .AddDbContext<ElectionContext>(options =>
+            //        options.UseNpgsql(Configuration.GetConnectionString("ElectionDatabase")))
+            //   .BuildServiceProvider();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

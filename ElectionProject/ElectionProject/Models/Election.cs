@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ElectionProject
+namespace ElectionProject.Models
 {
     public partial class Election
     {
@@ -9,14 +9,14 @@ namespace ElectionProject
         {
             Appeal = new HashSet<Appeal>();
             Candidate = new HashSet<Candidate>();
+            CircuitHead = new HashSet<CircuitHead>();
             Complaint = new HashSet<Complaint>();
-            HeadCircuit = new HashSet<HeadCircuit>();
-            HeadDistrict = new HashSet<HeadDistrict>();
+            DistrictHead = new HashSet<DistrictHead>();
             Observer = new HashSet<Observer>();
             Vote = new HashSet<Vote>();
         }
 
-        public int ElectionId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public int Year { get; set; }
         public int Tour { get; set; }
@@ -27,9 +27,9 @@ namespace ElectionProject
         public Citizen HeadOfCvkNavigation { get; set; }
         public ICollection<Appeal> Appeal { get; set; }
         public ICollection<Candidate> Candidate { get; set; }
+        public ICollection<CircuitHead> CircuitHead { get; set; }
         public ICollection<Complaint> Complaint { get; set; }
-        public ICollection<HeadCircuit> HeadCircuit { get; set; }
-        public ICollection<HeadDistrict> HeadDistrict { get; set; }
+        public ICollection<DistrictHead> DistrictHead { get; set; }
         public ICollection<Observer> Observer { get; set; }
         public ICollection<Vote> Vote { get; set; }
     }

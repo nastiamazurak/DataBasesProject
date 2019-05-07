@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace ElectionProject
+namespace ElectionProject.Models
 {
     public partial class ElectionContext : DbContext
     {
@@ -18,24 +18,24 @@ namespace ElectionProject
         public virtual DbSet<Appeal> Appeal { get; set; }
         public virtual DbSet<Candidate> Candidate { get; set; }
         public virtual DbSet<Circuit> Circuit { get; set; }
+        public virtual DbSet<CircuitHead> CircuitHead { get; set; }
         public virtual DbSet<Citizen> Citizen { get; set; }
         public virtual DbSet<Complaint> Complaint { get; set; }
         public virtual DbSet<District> District { get; set; }
+        public virtual DbSet<DistrictHead> DistrictHead { get; set; }
         public virtual DbSet<Election> Election { get; set; }
-        public virtual DbSet<HeadCircuit> HeadCircuit { get; set; }
-        public virtual DbSet<HeadDistrict> HeadDistrict { get; set; }
         public virtual DbSet<Observer> Observer { get; set; }
         public virtual DbSet<Type> Type { get; set; }
         public virtual DbSet<Vote> Vote { get; set; }
 
-        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //        {
-        //            if (!optionsBuilder.IsConfigured)
-        //            {
-        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-        //                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Election;Username=postgres;Password=postgres");
-        //            }
-        //        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseNpgsql("Host=localhost;Database=Election;Username=postgres;Password=postgres");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,11 +43,11 @@ namespace ElectionProject
             {
                 entity.ToTable("appeal");
 
-                entity.Property(e => e.AppealId).HasColumnName("appeal_id");
-
-                entity.Property(e => e.CircuitId).HasColumnName("circuit_id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CitizenId).HasColumnName("citizen_id");
+
+                entity.Property(e => e.DistrictId).HasColumnName("district_id");
 
                 entity.Property(e => e.ElectionId).HasColumnName("election_id");
 
@@ -57,17 +57,17 @@ namespace ElectionProject
 
                 entity.Property(e => e.TypeId).HasColumnName("type_id");
 
-                entity.HasOne(d => d.Circuit)
-                    .WithMany(p => p.Appeal)
-                    .HasForeignKey(d => d.CircuitId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("appeal_circuit_id_fkey");
-
                 entity.HasOne(d => d.Citizen)
                     .WithMany(p => p.Appeal)
                     .HasForeignKey(d => d.CitizenId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("appeal_citizen_id_fkey");
+
+                entity.HasOne(d => d.District)
+                    .WithMany(p => p.Appeal)
+                    .HasForeignKey(d => d.DistrictId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("appeal_district_id_fkey");
 
                 entity.HasOne(d => d.Election)
                     .WithMany(p => p.Appeal)
@@ -90,7 +90,7 @@ namespace ElectionProject
                     .HasName("candidate_number_key")
                     .IsUnique();
 
-                entity.Property(e => e.CandidateId).HasColumnName("candidate_id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CitizenId).HasColumnName("citizen_id");
 
@@ -119,24 +119,55 @@ namespace ElectionProject
                     .HasName("circuit_address_key")
                     .IsUnique();
 
-                entity.Property(e => e.CircuitId).HasColumnName("circuit_id");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.Address)
                     .IsRequired()
                     .HasColumnName("address")
-                    .HasColumnType("character varying(30)");
+                    .HasColumnType("character varying(75)");
 
-                entity.Property(e => e.DistrictName)
+                entity.Property(e => e.Center)
                     .IsRequired()
-                    .HasColumnName("district_name")
-                    .HasColumnType("character varying(30)");
+                    .HasColumnName("center")
+                    .HasColumnType("character varying(100)");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name")
                     .HasColumnType("character varying(30)");
+            });
 
-                entity.Property(e => e.Number).HasColumnName("number");
+            modelBuilder.Entity<CircuitHead>(entity =>
+            {
+                entity.ToTable("circuit_head");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CircuitId).HasColumnName("circuit_id");
+
+                entity.Property(e => e.CitizenId).HasColumnName("citizen_id");
+
+                entity.Property(e => e.ElectionId).HasColumnName("election_id");
+
+                entity.HasOne(d => d.Circuit)
+                    .WithMany(p => p.CircuitHead)
+                    .HasForeignKey(d => d.CircuitId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("circuit_head_circuit_id_fkey");
+
+                entity.HasOne(d => d.Citizen)
+                    .WithMany(p => p.CircuitHead)
+                    .HasForeignKey(d => d.CitizenId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("circuit_head_citizen_id_fkey");
+
+                entity.HasOne(d => d.Election)
+                    .WithMany(p => p.CircuitHead)
+                    .HasForeignKey(d => d.ElectionId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("circuit_head_election_id_fkey");
             });
 
             modelBuilder.Entity<Citizen>(entity =>
@@ -147,10 +178,10 @@ namespace ElectionProject
                     .HasName("citizen_ipn_key")
                     .IsUnique();
 
-                entity.Property(e => e.CitizenId).HasColumnName("citizen_id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Birth)
-                    .HasColumnName("birth")
+                entity.Property(e => e.BirthDate)
+                    .HasColumnName("birth_date")
                     .HasColumnType("date");
 
                 entity.Property(e => e.FirstName)
@@ -163,14 +194,14 @@ namespace ElectionProject
                     .HasColumnName("ipn")
                     .HasColumnType("character varying(12)");
 
-                entity.Property(e => e.Name)
+                entity.Property(e => e.LastName)
                     .IsRequired()
-                    .HasColumnName("name")
+                    .HasColumnName("last_name")
                     .HasColumnType("character varying(30)");
 
-                entity.Property(e => e.Surname)
+                entity.Property(e => e.MiddleName)
                     .IsRequired()
-                    .HasColumnName("surname")
+                    .HasColumnName("middle_name")
                     .HasColumnType("character varying(30)");
             });
 
@@ -178,9 +209,9 @@ namespace ElectionProject
             {
                 entity.ToTable("complaint");
 
-                entity.Property(e => e.ComplaintId).HasColumnName("complaint_id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CircuitId).HasColumnName("circuit_id");
+                entity.Property(e => e.DistrictId).HasColumnName("district_id");
 
                 entity.Property(e => e.ElectionId).HasColumnName("election_id");
 
@@ -192,11 +223,11 @@ namespace ElectionProject
 
                 entity.Property(e => e.TypeId).HasColumnName("type_id");
 
-                entity.HasOne(d => d.Circuit)
+                entity.HasOne(d => d.District)
                     .WithMany(p => p.Complaint)
-                    .HasForeignKey(d => d.CircuitId)
+                    .HasForeignKey(d => d.DistrictId)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("complaint_circuit_id_fkey");
+                    .HasConstraintName("complaint_district_id_fkey");
 
                 entity.HasOne(d => d.Election)
                     .WithMany(p => p.Complaint)
@@ -225,17 +256,14 @@ namespace ElectionProject
                     .HasName("district_address_key")
                     .IsUnique();
 
-                entity.Property(e => e.DistrictId).HasColumnName("district_id");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.Address)
                     .IsRequired()
                     .HasColumnName("address")
-                    .HasColumnType("character varying(100)");
-
-                entity.Property(e => e.Center)
-                    .IsRequired()
-                    .HasColumnName("center")
-                    .HasColumnType("character varying(100)");
+                    .HasColumnType("character varying(75)");
 
                 entity.Property(e => e.CircuitId).HasColumnName("circuit_id");
 
@@ -244,8 +272,6 @@ namespace ElectionProject
                     .HasColumnName("name")
                     .HasColumnType("character varying(30)");
 
-                entity.Property(e => e.Number).HasColumnName("number");
-
                 entity.HasOne(d => d.Circuit)
                     .WithMany(p => p.District)
                     .HasForeignKey(d => d.CircuitId)
@@ -253,11 +279,42 @@ namespace ElectionProject
                     .HasConstraintName("district_circuit_id_fkey");
             });
 
+            modelBuilder.Entity<DistrictHead>(entity =>
+            {
+                entity.ToTable("district_head");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CitizenId).HasColumnName("citizen_id");
+
+                entity.Property(e => e.DistrictId).HasColumnName("district_id");
+
+                entity.Property(e => e.ElectionId).HasColumnName("election_id");
+
+                entity.HasOne(d => d.Citizen)
+                    .WithMany(p => p.DistrictHead)
+                    .HasForeignKey(d => d.CitizenId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("district_head_citizen_id_fkey");
+
+                entity.HasOne(d => d.District)
+                    .WithMany(p => p.DistrictHead)
+                    .HasForeignKey(d => d.DistrictId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("district_head_district_id_fkey");
+
+                entity.HasOne(d => d.Election)
+                    .WithMany(p => p.DistrictHead)
+                    .HasForeignKey(d => d.ElectionId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("district_head_election_id_fkey");
+            });
+
             modelBuilder.Entity<Election>(entity =>
             {
                 entity.ToTable("election");
 
-                entity.Property(e => e.ElectionId).HasColumnName("election_id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.EndDate)
                     .HasColumnName("end_date")
@@ -285,81 +342,17 @@ namespace ElectionProject
                     .HasConstraintName("election_head_of_cvk_fkey");
             });
 
-            modelBuilder.Entity<HeadCircuit>(entity =>
-            {
-                entity.ToTable("head_circuit");
-
-                entity.Property(e => e.HeadCircuitId).HasColumnName("head_circuit_id");
-
-                entity.Property(e => e.CircuitId).HasColumnName("circuit_id");
-
-                entity.Property(e => e.CitizenId).HasColumnName("citizen_id");
-
-                entity.Property(e => e.ElectionId).HasColumnName("election_id");
-
-                entity.HasOne(d => d.Circuit)
-                    .WithMany(p => p.HeadCircuit)
-                    .HasForeignKey(d => d.CircuitId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("head_circuit_circuit_id_fkey");
-
-                entity.HasOne(d => d.Citizen)
-                    .WithMany(p => p.HeadCircuit)
-                    .HasForeignKey(d => d.CitizenId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("head_circuit_citizen_id_fkey");
-
-                entity.HasOne(d => d.Election)
-                    .WithMany(p => p.HeadCircuit)
-                    .HasForeignKey(d => d.ElectionId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("head_circuit_election_id_fkey");
-            });
-
-            modelBuilder.Entity<HeadDistrict>(entity =>
-            {
-                entity.HasKey(e => e.HeadDistrict1);
-
-                entity.ToTable("head_district");
-
-                entity.Property(e => e.HeadDistrict1).HasColumnName("head_district");
-
-                entity.Property(e => e.CitizenId).HasColumnName("citizen_id");
-
-                entity.Property(e => e.DistrictId).HasColumnName("district_id");
-
-                entity.Property(e => e.ElectionId).HasColumnName("election_id");
-
-                entity.HasOne(d => d.Citizen)
-                    .WithMany(p => p.HeadDistrict)
-                    .HasForeignKey(d => d.CitizenId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("head_district_citizen_id_fkey");
-
-                entity.HasOne(d => d.District)
-                    .WithMany(p => p.HeadDistrict)
-                    .HasForeignKey(d => d.DistrictId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("head_district_district_id_fkey");
-
-                entity.HasOne(d => d.Election)
-                    .WithMany(p => p.HeadDistrict)
-                    .HasForeignKey(d => d.ElectionId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("head_district_election_id_fkey");
-            });
-
             modelBuilder.Entity<Observer>(entity =>
             {
                 entity.ToTable("observer");
 
-                entity.Property(e => e.ObserverId).HasColumnName("observer_id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CandidateId).HasColumnName("candidate_id");
 
-                entity.Property(e => e.CircuitId).HasColumnName("circuit_id");
-
                 entity.Property(e => e.CitizenId).HasColumnName("citizen_id");
+
+                entity.Property(e => e.DistrictId).HasColumnName("district_id");
 
                 entity.Property(e => e.ElectionId).HasColumnName("election_id");
 
@@ -369,17 +362,17 @@ namespace ElectionProject
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("observer_candidate_id_fkey");
 
-                entity.HasOne(d => d.Circuit)
-                    .WithMany(p => p.Observer)
-                    .HasForeignKey(d => d.CircuitId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("observer_circuit_id_fkey");
-
                 entity.HasOne(d => d.Citizen)
                     .WithMany(p => p.Observer)
                     .HasForeignKey(d => d.CitizenId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("observer_citizen_id_fkey");
+
+                entity.HasOne(d => d.District)
+                    .WithMany(p => p.Observer)
+                    .HasForeignKey(d => d.DistrictId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("observer_district_id_fkey");
 
                 entity.HasOne(d => d.Election)
                     .WithMany(p => p.Observer)
@@ -392,7 +385,7 @@ namespace ElectionProject
             {
                 entity.ToTable("type");
 
-                entity.Property(e => e.TypeId).HasColumnName("type_id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -408,13 +401,13 @@ namespace ElectionProject
                     .HasName("vote_citizen_id_key")
                     .IsUnique();
 
-                entity.Property(e => e.VoteId).HasColumnName("vote_id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CandidateId).HasColumnName("candidate_id");
 
-                entity.Property(e => e.CircuitId).HasColumnName("circuit_id");
-
                 entity.Property(e => e.CitizenId).HasColumnName("citizen_id");
+
+                entity.Property(e => e.DistrictId).HasColumnName("district_id");
 
                 entity.Property(e => e.ElectionId).HasColumnName("election_id");
 
@@ -424,17 +417,17 @@ namespace ElectionProject
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("vote_candidate_id_fkey");
 
-                entity.HasOne(d => d.Circuit)
-                    .WithMany(p => p.Vote)
-                    .HasForeignKey(d => d.CircuitId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("vote_circuit_id_fkey");
-
                 entity.HasOne(d => d.Citizen)
                     .WithOne(p => p.Vote)
                     .HasForeignKey<Vote>(d => d.CitizenId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("vote_citizen_id_fkey");
+
+                entity.HasOne(d => d.District)
+                    .WithMany(p => p.Vote)
+                    .HasForeignKey(d => d.DistrictId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("vote_district_id_fkey");
 
                 entity.HasOne(d => d.Election)
                     .WithMany(p => p.Vote)
