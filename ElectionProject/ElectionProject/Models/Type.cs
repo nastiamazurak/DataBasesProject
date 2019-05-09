@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ElectionProject
+namespace ElectionProject.Models
 {
     public partial class Type
     {
@@ -11,7 +11,7 @@ namespace ElectionProject
             Complaint = new HashSet<Complaint>();
         }
 
-        public int TypeId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
 
         public ICollection<Appeal> Appeal { get; set; }

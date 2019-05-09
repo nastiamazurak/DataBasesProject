@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ElectionProject
+namespace ElectionProject.Models
 {
     public partial class Candidate
     {
@@ -11,7 +11,7 @@ namespace ElectionProject
             Vote = new HashSet<Vote>();
         }
 
-        public int CandidateId { get; set; }
+        public int Id { get; set; }
         public int Number { get; set; }
         public int? ElectionId { get; set; }
         public int CitizenId { get; set; }

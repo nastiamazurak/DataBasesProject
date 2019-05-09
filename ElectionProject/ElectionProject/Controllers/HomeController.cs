@@ -12,6 +12,7 @@ namespace ElectionProject.Controllers
     {
         public IActionResult Index()
         {
+
             return View();
         }
 
