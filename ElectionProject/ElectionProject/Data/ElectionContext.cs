@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using ElectionProject.Models.AuthorisationModel;
+using ElectionProject.Models;
 
 namespace ElectionProject
 {
@@ -27,6 +29,9 @@ namespace ElectionProject
         public virtual DbSet<Observer> Observer { get; set; }
         public virtual DbSet<Type> Type { get; set; }
         public virtual DbSet<Vote> Vote { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
 
         //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //        {
