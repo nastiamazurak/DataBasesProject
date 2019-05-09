@@ -29,8 +29,8 @@ namespace ElectionProject
         public virtual DbSet<Observer> Observer { get; set; }
         public virtual DbSet<Type> Type { get; set; }
         public virtual DbSet<Vote> Vote { get; set; }
-
         public DbSet<User> Users { get; set; }
+
 
 
         //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
