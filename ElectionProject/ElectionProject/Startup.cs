@@ -36,11 +36,6 @@ namespace ElectionProject
             services.AddDbContext<ElectionContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("ElectionDatabase")));
 
-            //services.AddEntityFrameworkNpgsql()
-            //   .AddDbContext<ElectionContext>(options =>
-            //        options.UseNpgsql(Configuration.GetConnectionString("ElectionDatabase")))
-            //   .BuildServiceProvider();
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
