@@ -1,0 +1,7 @@
+with sum_of_candidates as(select count(vote_id) as sum1 from vote),
+sum_of_votes as(select candidate_id,count(candidate_id)as sum2 from vote group by candidate_id)
+select cit.first_name,cit.name,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+from sum_of_votes as sov join candidate as ca on ca.candidate_id=sov.candidate_id
+join citizen as cit on cit.citizen_id=ca.citizen_id 
+join election as el on el.election_id=ca.election_id where el.name=@name and el.tour=@tour and el.year=@year
+group by cit.first_name,cit.name,candidate_percent; 
