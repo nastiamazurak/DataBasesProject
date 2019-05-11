@@ -61,7 +61,7 @@ namespace ElectionProject.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
-                //else
+                else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
             return View(model);
@@ -83,7 +83,7 @@ namespace ElectionProject.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Authorisation");
         }
     }
 }
