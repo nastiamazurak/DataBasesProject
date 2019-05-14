@@ -1,7 +1,135 @@
-with sum_of_candidates as(select count(vote_id) as sum1 from vote),
+
+_______________________________________________
+стандартне
+
+
+
+_______________________________________________
+
+оголосити остаточнi результати виборiв у країнi (пiсля виборiв);
+
+with sum_of_candidates as(select count(id) as sum1 from vote),
 sum_of_votes as(select candidate_id,count(candidate_id)as sum2 from vote group by candidate_id)
-select cit.first_name,cit.name,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
-from sum_of_votes as sov join candidate as ca on ca.candidate_id=sov.candidate_id
-join citizen as cit on cit.citizen_id=ca.citizen_id 
-join election as el on el.election_id=ca.election_id where el.name=@name and el.tour=@tour and el.year=@year
-group by cit.first_name,cit.name,candidate_percent; 
+select cit.first_name,cit.first_name,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+from sum_of_votes as sov join candidate as ca on ca.id=sov.candidate_id
+join citizen as cit on cit.id=ca.citizen_id 
+join election as el on el.id=ca.election_id
+where el.id=@name and el.tour=@tour and el.year=@year
+group by cit.first_name,cit.first_name,candidate_percent;
+
+
+
+_______________________________________________
+переглянути перелiк виборцiв вiртуальних дiльниць та округiв (у будь-який час);
+
+select dis.name as district_name, cit.first_name, cit.last_name, cit.middle_name from citizen as cit
+join vote as v on v.citizen_id=cit.id
+join district as dis on dis.id=v.district_id
+group by dis.name, cit.first_name, cit.last_name, cit.middle_name;
+
+select cir.name as circuit_name, cit.first_name, cit.last_name, cit.middle_name from citizen as cit
+join vote as v on v.citizen_id=cit.id
+join district as dis on dis.id=v.district_id
+join circuit as cir on cir.id=dis.circuit_id
+group by cir.name, cit.first_name, cit.last_name, cit.middle_name;
+
+_______________________________________________
+переглянути усi скарги спостерiгачiв та звернення громадян (у будь-який час);
+
+select el.name as election_name,el.year,cit.first_name,cit.last_name,com.text as complaint from complaint as com
+join election as el on el.id=com.election_id
+join observer as ob on com.observer_id=ob.id
+join citizen as cit  on ob.citizen_id=cit.id
+group by el.name,el.year,cit.first_name,cit.last_name,com.text;
+
+select el.name as election_name,el.year,cit.first_name,cit.last_name,ap.text as appeal from appeal as ap
+join election as el on el.id=ap.election_id
+join citizen as cit on ap.citizen_id=cit.id
+group by el.name,el.year,cit.first_name,cit.last_name,ap.text;
+
+_____________________________________________________
+стандартне
+
+
+___________________________________________________
+надати головi ЦВК остаточнi результати виборiв в окрузi (пiсля виборiв);
+
+with sum_of_candidates as(select count(id) as sum1 from vote),
+sum_of_votes as(select candidate_id,count(candidate_id)as sum2 from vote group by candidate_id)
+select cir.name,cit.first_name,cit.first_name,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+from sum_of_votes as sov join candidate as ca on ca.id=sov.candidate_id
+join citizen as cit on cit.id=ca.citizen_id 
+join election as el on el.id=ca.election_id
+join vote as v on v.citizen_id=cit.id
+join district as dis on dis.id=v.district_id
+join circuit as cir on cir.id=dis.circuit_id
+where el.id=@name and el.tour=@tour and el.year=@year and cir.name=@name
+group by cir.name,cit.first_name,cit.first_name,candidate_percent;
+
+___________________________________________________
+переглянути перелiк виборцiв вiртуальних дiльниць округу (у будь-який час);
+
+select cit.first_name,cit.last_name,cit.middle_name from citizen as cit
+join vote as v on v.citizen_id=cit.id
+join district as dis on dis.id=v.district_id
+join circuit as cir on dis.circuit_id=cir.id
+where cir.name=@name
+group by cit.first_name,cit.last_name,cit.middle_name;
+
+select cit.first_name,cit.last_name,cit.middle_name from citizen as cit
+join vote as v on v.citizen_id=cit.id
+join district as dis on dis.id=v.district_id
+where dis.name=@name
+group by cit.first_name,cit.last_name,cit.middle_name;
+
+________________________________________________________________
+переглянути скарги спостерiгачiв та звернення вiртуального округу (у будь-який час);
+
+select dis.name as district_name,cit.first_name,cit.last_name,com.text as complaint,ap.text as appeal from complaint as com
+join observer as ob on ob.id=com.observer_id
+join citizen as cit on ob.citizen_id=cit.id
+join district as dis on dis.id=ob.district_id
+join circuit as cir on cir.id=dis.circuit_id
+join appeal as ap on ap.district_id=dis.id
+where cir.name=@name
+group by dis.name,cit.first_name,cit.last_name,com.text;
+
+
+____________________________________________________
+переглянути перелiк виборцiв вiртуальної дiльницi (у будь-який час);
+
+select cit.first_name,cit.last_name,cit.middle_name from citizen as cit
+join vote as v on v.citizen_id=cit.id
+join district as dis on dis.id=v.district_id
+group by cit.first_name,cit.last_name,cit.middle_name;
+
+
+________________________________________________
+стандартно
+
+________________________________________________
+стандартно
+
+_________________________________________________________
+переглянути звернення громадян (у будь-який час);
+
+select cit.first_name,cit.last_name,cit.middle_name,ap.text as appeal from appeal as ap
+join citizen as cit on cit.id=ap.citizen_id
+join district as dis on ap.district_id=dis.id
+where dis.name=@name
+group by cit.first_name,cit.last_name,cit.middle_name,ap.text;
+
+______________________________________________________
+надати головi окружної комiсiї остаточнi результати виборiв у дiльницi;
+
+with sum_of_candidates as(select count(id) as sum1 from vote),
+sum_of_votes as(select candidate_id,count(candidate_id)as sum2 from vote group by candidate_id)
+select cit.first_name,cit.first_name,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+from sum_of_votes as sov join candidate as ca on ca.id=sov.candidate_id
+join citizen as cit on cit.id=ca.citizen_id 
+join election as el on el.id=ca.election_id
+join district as dis on dis.id=v.district_id
+where el.id=@name and el.tour=@tour and el.year=@year and dis.name=@name
+group by cit.first_name,cit.first_name,candidate_percent;
+
+
