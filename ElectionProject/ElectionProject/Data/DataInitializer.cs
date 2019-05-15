@@ -239,6 +239,8 @@ namespace ElectionProject.Data
 
             context.Candidate.AddRange(candidate);
 
+
+
             if (context.Observer.Any())
             {
                 return;
@@ -262,11 +264,11 @@ namespace ElectionProject.Data
                 new Observer{ Id = 14, ElectionId = 07, DistrictId = 943, CitizenId = 15, CandidateId = 02 },
                 new Observer{ Id = 55, ElectionId = 07, DistrictId = 944, CitizenId = 14, CandidateId = 02 },
                 new Observer{ Id = 16, ElectionId = 07, DistrictId = 951, CitizenId = 13, CandidateId = 02 },
-            } ;
+            };
 
             context.Observer.AddRange(observer);
 
-            
+
 
             context.SaveChanges();
         }
