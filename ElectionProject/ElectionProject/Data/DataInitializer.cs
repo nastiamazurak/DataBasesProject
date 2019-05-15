@@ -226,6 +226,48 @@ namespace ElectionProject.Data
 
             context.DistrictHead.AddRange(district_heads);
 
+            if (context.Candidate.Any())
+            {
+                return;
+            }
+
+            var candidate = new Candidate[]
+            {
+                new Candidate{ Id = 01,Number = 01, ElectionId = 07, CitizenId = 11 },
+                new Candidate{ Id = 02,Number = 02, ElectionId = 07, CitizenId = 42 },
+            };
+
+            context.Candidate.AddRange(candidate);
+
+            if (context.Observer.Any())
+            {
+                return;
+            }
+
+            var observer = new Observer[]
+            {
+                new Observer{ Id = 01, ElectionId = 07, DistrictId = 925, CitizenId = 46, CandidateId = 01 },
+                new Observer{ Id = 02, ElectionId = 07, DistrictId = 927, CitizenId = 45, CandidateId = 01 },
+                new Observer{ Id = 03, ElectionId = 07, DistrictId = 931, CitizenId = 44, CandidateId = 01 },
+                new Observer{ Id = 04, ElectionId = 07, DistrictId = 935, CitizenId = 43, CandidateId = 01 },
+                new Observer{ Id = 05, ElectionId = 07, DistrictId = 877, CitizenId = 41, CandidateId = 01 },
+                new Observer{ Id = 06, ElectionId = 07, DistrictId = 878, CitizenId = 40, CandidateId = 01 },
+                new Observer{ Id = 07, ElectionId = 07, DistrictId = 880, CitizenId = 29, CandidateId = 01 },
+                new Observer{ Id = 08, ElectionId = 07, DistrictId = 883, CitizenId = 38, CandidateId = 01 },
+                new Observer{ Id = 09, ElectionId = 07, DistrictId = 848, CitizenId = 37, CandidateId = 02 },
+                new Observer{ Id = 10, ElectionId = 07, DistrictId = 850, CitizenId = 36, CandidateId = 02 },
+                new Observer{ Id = 11, ElectionId = 07, DistrictId = 852, CitizenId = 27, CandidateId = 02 },
+                new Observer{ Id = 12, ElectionId = 07, DistrictId = 855, CitizenId = 22, CandidateId = 02 },
+                new Observer{ Id = 13, ElectionId = 07, DistrictId = 939, CitizenId = 20, CandidateId = 02 },
+                new Observer{ Id = 14, ElectionId = 07, DistrictId = 943, CitizenId = 15, CandidateId = 02 },
+                new Observer{ Id = 55, ElectionId = 07, DistrictId = 944, CitizenId = 14, CandidateId = 02 },
+                new Observer{ Id = 16, ElectionId = 07, DistrictId = 951, CitizenId = 13, CandidateId = 02 },
+            } ;
+
+            context.Observer.AddRange(observer);
+
+            
+
             context.SaveChanges();
         }
     }
