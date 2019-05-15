@@ -262,13 +262,67 @@ namespace ElectionProject.Data
                 new Observer{ Id = 12, ElectionId = 07, DistrictId = 855, CitizenId = 22, CandidateId = 02 },
                 new Observer{ Id = 13, ElectionId = 07, DistrictId = 939, CitizenId = 20, CandidateId = 02 },
                 new Observer{ Id = 14, ElectionId = 07, DistrictId = 943, CitizenId = 15, CandidateId = 02 },
-                new Observer{ Id = 55, ElectionId = 07, DistrictId = 944, CitizenId = 14, CandidateId = 02 },
+                new Observer{ Id = 15, ElectionId = 07, DistrictId = 944, CitizenId = 14, CandidateId = 02 },
                 new Observer{ Id = 16, ElectionId = 07, DistrictId = 951, CitizenId = 13, CandidateId = 02 },
             };
 
             context.Observer.AddRange(observer);
 
+            if (context.Vote.Any())
+            {
+                return;
+            }
 
+            var vote = new Vote[]
+            {
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 925, CitizenId = 01, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 927, CitizenId = 02, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 927, CitizenId = 03, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 927, CitizenId = 04, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 931, CitizenId = 05, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 931, CitizenId = 06, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 931, CitizenId = 07, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 935, CitizenId = 08, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 935, CitizenId = 09, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 935, CitizenId = 11, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 877, CitizenId = 12, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 877, CitizenId = 13, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 877, CitizenId = 14, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 878, CitizenId = 15, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 878, CitizenId = 16, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 878, CitizenId = 17, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 880, CitizenId = 18, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 880, CitizenId = 19, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 880, CitizenId = 20, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 883, CitizenId = 21, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 883, CitizenId = 22, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 883, CitizenId = 23, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 848, CitizenId = 24, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 848, CitizenId = 25, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 848, CitizenId = 26, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 850, CitizenId = 27, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 850, CitizenId = 28, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 850, CitizenId = 29, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 852, CitizenId = 30, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 852, CitizenId = 31, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 852, CitizenId = 32, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 855, CitizenId = 33, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 855, CitizenId = 34, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 855, CitizenId = 35, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 939, CitizenId = 36, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 939, CitizenId = 37, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 939, CitizenId = 38, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 943, CitizenId = 39, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 943, CitizenId = 40, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 943, CitizenId = 41, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 944, CitizenId = 42, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 944, CitizenId = 43, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 951, CitizenId = 44, CandidateId = 02 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 951, CitizenId = 45, CandidateId = 01 },
+                new Vote{ Id = 01, ElectionId = 07, DistrictId = 951, CitizenId = 46, CandidateId = 02 }
+            };
+
+            context.Vote.AddRange(vote);
 
             context.SaveChanges();
         }
