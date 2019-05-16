@@ -27,6 +27,7 @@ namespace ElectionProject
                 {
                     var context = services.GetRequiredService<ElectionContext>();
                     DataInitializer.Initialize(context);
+                    
                 }
                 catch (Exception exception)
                 {
