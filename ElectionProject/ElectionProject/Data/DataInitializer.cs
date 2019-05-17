@@ -103,7 +103,9 @@ namespace ElectionProject.Data
                     new Citizen { Id = 39, FirstName = "Марко", LastName = "Бучковський", MiddleName = "Романович", BirthDate = new DateTime(1977, 8, 19), Ipn = "235465325" },
                     new Citizen { Id = 40, FirstName = "Владислав", LastName = "Панчак", MiddleName = "Андрійович", BirthDate = new DateTime(1973, 6, 15), Ipn = "768543674" },
                     new Citizen { Id = 41, FirstName = "Ярослав", LastName = "Бориско", MiddleName = "Романович", BirthDate = new DateTime(1951, 1, 10), Ipn = "543465476" },
-                    new Citizen { Id = 42, FirstName = "Роман ", LastName = "Царь", MiddleName = "Романович", BirthDate = new DateTime(1964, 1, 11), Ipn = "435464355" }
+                    new Citizen { Id = 42, FirstName = "Роман ", LastName = "Царь", MiddleName = "Романович", BirthDate = new DateTime(1964, 1, 11), Ipn = "435464355" },
+                    new Citizen { Id = 43, FirstName = "Петро ", LastName = "Порошенко", MiddleName = "Олексійович", BirthDate = new DateTime(1965, 09, 26), Ipn = "235474357" },
+                    new Citizen { Id = 44, FirstName = "Володимир ", LastName = "Зеленський", MiddleName = "Олександрович", BirthDate = new DateTime(1978, 01, 25), Ipn = "535575355" }
                 );
                 context.SaveChanges();
             }
@@ -115,9 +117,9 @@ namespace ElectionProject.Data
                     new Election { Id = 2, Name = "Вибори президента", Year = 1995, Tour = 2, StartDate = new DateTime(1994, 6, 26), EndDate = new DateTime(1994, 7, 10), HeadOfCvk = 9 },
                     new Election { Id = 3, Name = "Вибори президента", Year = 1999, Tour = 2, StartDate = new DateTime(1999, 10, 31), EndDate = new DateTime(1999, 11, 14), HeadOfCvk = 7 },
                     new Election { Id = 4, Name = "Вибори президента", Year = 2004, Tour = 2, StartDate = new DateTime(2004, 10, 31), EndDate = new DateTime(2004, 12, 26), HeadOfCvk = 8 },
-                    new Election { Id = 5, Name = "Вибори президента", Year = 20, Tour = 2, StartDate = new DateTime(2004, 1, 17), EndDate = new DateTime(2004, 2, 7), HeadOfCvk = 14 },
-                    new Election { Id = 6, Name = "Позачергові вибори", Year = 214, Tour = 1, StartDate = new DateTime(214, 5, 25), EndDate = new DateTime(214, 5, 30), HeadOfCvk = 15 },
-                    new Election { Id = 7, Name = "Вибори президента", Year = 219, Tour = 2, StartDate = new DateTime(219, 3, 30), EndDate = new DateTime(219, 4, 21), HeadOfCvk = 16 }
+                    new Election { Id = 5, Name = "Вибори президента", Year = 2009, Tour = 2, StartDate = new DateTime(2004, 1, 17), EndDate = new DateTime(2004, 2, 7), HeadOfCvk = 14 },
+                    new Election { Id = 6, Name = "Позачергові вибори",Year = 2014, Tour = 1, StartDate = new DateTime(214, 5, 25), EndDate = new DateTime(214, 5, 30), HeadOfCvk = 15 },
+                    new Election { Id = 7, Name = "Вибори президента", Year = 2019, Tour = 2, StartDate = new DateTime(219, 3, 30), EndDate = new DateTime(219, 4, 21), HeadOfCvk = 16 }
                 );
                 context.SaveChanges();
             }
@@ -203,8 +205,8 @@ namespace ElectionProject.Data
             if (!context.Candidate.Any())
             {
                 context.Candidate.AddRange(
-                    new Candidate { Id = 1, Number = 1, ElectionId = 7, CitizenId = 11 },
-                    new Candidate { Id = 2, Number = 2, ElectionId = 7, CitizenId = 42 }
+                    new Candidate { Id = 1, Number = 1, ElectionId = 7, CitizenId = 42 },
+                    new Candidate { Id = 2, Number = 2, ElectionId = 7, CitizenId = 43 }
                 );
                 context.SaveChanges();
             }
