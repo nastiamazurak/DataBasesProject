@@ -8,6 +8,7 @@ namespace ElectionProject.Models
         public District()
         {
             Appeal = new HashSet<Appeal>();
+            Citizen = new HashSet<Citizen>();
             Complaint = new HashSet<Complaint>();
             DistrictHead = new HashSet<DistrictHead>();
             Observer = new HashSet<Observer>();
@@ -21,6 +22,7 @@ namespace ElectionProject.Models
 
         public Circuit Circuit { get; set; }
         public ICollection<Appeal> Appeal { get; set; }
+        public ICollection<Citizen> Citizen { get; set; }
         public ICollection<Complaint> Complaint { get; set; }
         public ICollection<DistrictHead> DistrictHead { get; set; }
         public ICollection<Observer> Observer { get; set; }

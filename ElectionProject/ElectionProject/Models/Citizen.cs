@@ -9,6 +9,7 @@ namespace ElectionProject.Models
         {
             Appeal = new HashSet<Appeal>();
             Candidate = new HashSet<Candidate>();
+            CheckUpdates = new HashSet<CheckUpdates>();
             CircuitHead = new HashSet<CircuitHead>();
             DistrictHead = new HashSet<DistrictHead>();
             Election = new HashSet<Election>();
@@ -21,10 +22,13 @@ namespace ElectionProject.Models
         public string MiddleName { get; set; }
         public DateTime BirthDate { get; set; }
         public string Ipn { get; set; }
+        public int? DistrictId { get; set; }
 
+        public District District { get; set; }
         public Vote Vote { get; set; }
         public ICollection<Appeal> Appeal { get; set; }
         public ICollection<Candidate> Candidate { get; set; }
+        public ICollection<CheckUpdates> CheckUpdates { get; set; }
         public ICollection<CircuitHead> CircuitHead { get; set; }
         public ICollection<DistrictHead> DistrictHead { get; set; }
         public ICollection<Election> Election { get; set; }

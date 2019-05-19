@@ -1,7 +1,18 @@
-﻿@{
+﻿@model IEnumerable<ElectionProject.Models.ElectionResult>
+@{
     ViewData["Title"] = "About";
 }
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
+<table>
+    @foreach (var distr in Model)
+    {
+        <tr>
+            <td>@distr.first_name</td>
+            <td>@distr.last_name</td>
+            <td>@Math.Round(distr.candidate_percent, 2)</td>
+        </tr>
+    }
+</table>
 
 <p>Use this area to provide additional information.</p>
