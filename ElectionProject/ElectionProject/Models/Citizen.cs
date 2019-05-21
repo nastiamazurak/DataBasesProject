@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace ElectionProject.Models
 {
-    public partial class Citizen
+    public partial class Citizen:IdentityUser
     {
         public Citizen()
         {
@@ -23,6 +24,8 @@ namespace ElectionProject.Models
         public DateTime BirthDate { get; set; }
         public string Ipn { get; set; }
         public int? DistrictId { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
 
         public District District { get; set; }
         public Vote Vote { get; set; }

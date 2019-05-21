@@ -256,8 +256,27 @@ _____________________________________________________________________________
 знайти кандидатiв, якi посiли одне з перших M мiсць у принаймнi N вiртуальних дiльницях;
 
 
-той якийсь кончений я над ним цілий день сидів, пізніше до нього повернусь
-
+with sum_of_candidates as(select count(id) as sum1 from vote),
+sum_of_votes as(select cir.id as cir_id, candidate_id, count(candidate_id) as sum2 from vote as v
+				join district as dis on v.district_id=dis.id 
+				join circuit as cir on cir.id=dis.circuit_id
+				group by cir.id, candidate_id),
+circuit_count as(select cir.id as cir_id,ca.id as ca_id,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+from sum_of_votes as sov 
+join candidate as ca on ca.id=sov.candidate_id
+join election as el on el.id=ca.election_id
+join circuit as cir on cir.id=sov.cir_id
+order by cir_id,candidate_percent desc),
+circuit_winners as (select cir_id,ca_id,candidate_percent from 
+(select cir_id,ca_id,candidate_percent, row_number() over
+ (partition by cir_id order by candidate_percent desc)
+ as percent_rank from circuit_count)ranked where percent_rank<=@number)
+select cit.first_name,cit.last_name from circuit as cir
+join circuit_winners as cw on cw.cir_id=cir.id
+join candidate as ca on ca.id=cw.ca_id
+join citizen as cit on cit.id=ca.citizen_id
+group by cit.first_name,cit.last_name
+having count(cir.id)>@number;
 
 _______________________________________________________________________
 переглянути усiх громадян, що не були доданi до жодної вiртуальної дiльницi;

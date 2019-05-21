@@ -129,6 +129,8 @@ namespace ElectionProject
             {
                 entity.ToTable("check_updates");
 
+                entity.HasIndex(e => e.CitizenId);
+
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CitizenId).HasColumnName("citizen_id");
@@ -212,8 +214,16 @@ namespace ElectionProject
 
                 entity.HasIndex(e => e.DistrictId);
 
+                entity.HasIndex(e => e.Email)
+                    .HasName("uniquemail")
+                    .IsUnique();
+
                 entity.HasIndex(e => e.Ipn)
                     .HasName("citizen_ipn_key")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Password)
+                    .HasName("uniquepassword")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -223,6 +233,10 @@ namespace ElectionProject
                     .HasColumnType("date");
 
                 entity.Property(e => e.DistrictId).HasColumnName("district_id");
+
+                entity.Property(e => e.Email)
+                    .HasColumnName("email")
+                    .HasColumnType("character varying(40)");
 
                 entity.Property(e => e.FirstName)
                     .IsRequired()
@@ -242,6 +256,10 @@ namespace ElectionProject
                 entity.Property(e => e.MiddleName)
                     .IsRequired()
                     .HasColumnName("middle_name")
+                    .HasColumnType("character varying(30)");
+
+                entity.Property(e => e.Password)
+                    .HasColumnName("password")
                     .HasColumnType("character varying(30)");
 
                 entity.HasOne(d => d.District)
