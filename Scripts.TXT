@@ -149,18 +149,15 @@ sum_of_votes as(select cir.id as cir_id, candidate_id, count(candidate_id) as su
 circuit_count as (select cir.id as cir_id,ca.id as ca_id,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
 from sum_of_votes as sov 
 join candidate as ca on ca.id=sov.candidate_id
-join citizen as cit on cit.id=ca.citizen_id 
 join election as el on el.id=ca.election_id
-join vote as v on v.citizen_id=cit.id
-join district as dis on dis.id=v.district_id
 join circuit as cir on cir.id=sov.cir_id
-where el.id=@name and el.tour=@tour and el.year=@year
-group by cir.id,ca.id,candidate_percent),
+where el.id=@name and el.tour=@tour and el.year=@year),
 circuit_winner as(select f.cir_id,f.ca_id,f.candidate_percent from(select cir_id,max(candidate_percent) as max_c from circuit_count
 group by cir_id) as x inner join circuit_count f on f.cir_id=x.cir_id and f.candidate_percent=x.max_c)
 select cir.name,count(v.id) as electorate_count,cit.first_name,cit.last_name,cw.candidate_percent
 from circuit_winner as cw
-join citizen as cit on cit.id=cw.ca_id 
+join candidate as ca on ca.id=cw.ca_id
+join citizen as cit on cit.id=ca.citizen_id 
 join circuit as cir on cir.id=cw.cir_id
 join district as dis on dis.circuit_id=cir.id
 join vote as v on v.district_id=dis.id
@@ -171,6 +168,7 @@ ____________________________________________________________________________
 голосували, переможц€ у дiльницi та його результат;
 
 
+
 with sum_of_candidates as(select count(id) as sum1 from vote),
 sum_of_votes as(select dis.id as dis_id, candidate_id, count(candidate_id) as sum2 from vote as v
 				join district as dis on v.district_id=dis.id 
@@ -178,35 +176,32 @@ sum_of_votes as(select dis.id as dis_id, candidate_id, count(candidate_id) as su
 district_count as (select dis.id as dis_id,ca.id as ca_id,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
 from sum_of_votes as sov 
 join candidate as ca on ca.id=sov.candidate_id
-join citizen as cit on cit.id=ca.citizen_id 
 join election as el on el.id=ca.election_id
 join district as dis on dis.id=sov.dis_id
-join vote as v on v.district_id=dis.id
 join circuit as cir on cir.id=dis.circuit_id
-where el.id=@name and el.tour=@tour and el.year=@year and cir.name=@name
-group by dis.id,ca.id,candidate_percent),
+where where el.id=@name and el.tour=@tour and el.year=@year and cir.name=@name),
 district_winner as(select f.dis_id,f.ca_id,f.candidate_percent from(select dis_id,max(candidate_percent) as max_c from district_count
 group by dis_id) as x inner join district_count f on f.dis_id=x.dis_id and f.candidate_percent=x.max_c)
 select dis.name,count(v.id) as electorate_count,cit.first_name,cit.last_name,cw.candidate_percent
 from district_winner as cw
-join citizen as cit on cit.id=cw.ca_id 
+join candidate as ca on ca.id=cw.ca_id
+join citizen as cit on cit.id=ca.citizen_id 
 join district as dis on dis.id=cw.dis_id
 join vote as v on v.district_id=dis.id
-group by dis.name,cit.first_name,cit.last_name,cw.candidate_percent;
-
+group by dis.name,cit.first_name,cit.last_name,cw.candidate_percent
+order by dis.name,cw.candidate_percent desc;
 
 _______________________________________________________________________________________
 знайти кандидатiв, €кi отримали принаймнi P вiдсоткiв голосiв;
 
 with sum_of_candidates as(select count(id) as sum1 from vote),
 sum_of_votes as(select candidate_id,count(candidate_id)as sum2 from vote group by candidate_id)
-select cit.first_name,cit.first_name 
+select cit.first_name,cit.last_name 
 from sum_of_votes as sov join candidate as ca on ca.id=sov.candidate_id
 join citizen as cit on cit.id=ca.citizen_id 
 join election as el on el.id=ca.election_id
-join vote as v on v.citizen_id=cit.id
-where el.id=@name and el.tour=@tour and el.year=@year and (cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)>@number
-group by cit.first_name,cit.first_name;
+where el.id=@name and el.tour=@tour and el.year=@year and (cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)>45
+group by cit.first_name,cit.last_name;
 
 
 __________________________________________________________________________________________________
@@ -220,20 +215,17 @@ sum_of_votes as(select cir.id as cir_id, candidate_id, count(candidate_id) as su
 circuit_count as (select cir.id as cir_id,ca.id as ca_id,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
 from sum_of_votes as sov 
 join candidate as ca on ca.id=sov.candidate_id
-join citizen as cit on cit.id=ca.citizen_id 
 join election as el on el.id=ca.election_id
-join vote as v on v.citizen_id=cit.id
-join district as dis on dis.id=v.district_id
 join circuit as cir on cir.id=sov.cir_id
-where el.id=@name and el.tour=@tour and el.year=@year
-group by cir.id,ca.id,candidate_percent),
+where el.id=@name and el.tour=@tour and el.year=@year),
 circuit_winner as(select f.cir_id,f.ca_id,f.candidate_percent from(select cir_id,max(candidate_percent) as max_c from circuit_count
 group by cir_id) as x inner join circuit_count f on f.cir_id=x.cir_id and f.candidate_percent=x.max_c)
 select cit.first_name,cit.last_name from circuit as cir
 join circuit_winner as cw on cw.cir_id=cir.id
-join citizen as cit on cit.id=cw.ca_id
+join candidate as ca on ca.id=cw.ca_id
+join citizen as cit on cit.id=ca.citizen_id
 group by cit.first_name,cit.last_name
-having count(cir.id)>@number;
+having count(cir.id)>=@number;
 
 _____________________________________________________________________
 знайти кандидатiв, €кi отримати хоча б P вiдсоткiв голосiв у принаймнi N вiртуальних
@@ -247,43 +239,24 @@ sum_of_votes as(select cir.id as cir_id, candidate_id, count(candidate_id) as su
 circuit_count as (select cir.id as cir_id,ca.id as ca_id,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
 from sum_of_votes as sov 
 join candidate as ca on ca.id=sov.candidate_id
-join citizen as cit on cit.id=ca.citizen_id 
 join election as el on el.id=ca.election_id
-join vote as v on v.citizen_id=cit.id
-join district as dis on dis.id=v.district_id
 join circuit as cir on cir.id=sov.cir_id
-where el.id=@name and el.tour=@tour and el.year=@year
-group by cir.id,ca.id,candidate_percent),
-circuit_winner as(select f.cir_id,f.ca_id,f.candidate_percent from(select cir_id,max(candidate_percent) as max_c from circuit_count
-group by cir_id) as x inner join circuit_count f on f.cir_id=x.cir_id and f.candidate_percent=x.max_c)
+where el.id=@name and el.tour=@tour and el.year=@year),
+circuit_winner as(select cir_id,ca_id,candidate_percent from circuit_count where candidate_percent>@percent)
 select cit.first_name,cit.last_name from circuit as cir
 join circuit_winner as cw on cw.cir_id=cir.id
-join citizen as cit on cit.id=cw.ca_id
-where candidate_percent>@P_number
+join candidate as ca on ca.id=cw.ca_id
+join citizen as cit on cit.id=ca.citizen_id
 group by cit.first_name,cit.last_name
-having count(cir.id)>@N_number;
+having count(cir.id)>=@number;
 
 
 _____________________________________________________________________________
 
 знайти кандидатiв, €кi посiли одне з перших M мiсць у принаймнi N вiртуальних дiльниц€х;
 
-with sum_of_candidates as(select count(id) as sum1 from vote),
-sum_of_votes as(select candidate_id,count(candidate_id)as sum2 from vote group by candidate_id),
-district_winer as(select dir.id as dir_id,ca.id as ca_id,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
-from sum_of_votes as sov join candidate as ca on ca.id=sov.candidate_id
-join citizen as cit on cit.id=ca.citizen_id 
-join election as el on el.id=ca.election_id
-join vote as v on v.citizen_id=cit.id
-join district as dis on dis.id=v.district_id
-where el.id=@name and el.tour=@tour and el.year=@year
-group by cir.id,ca.id,candidate_percent
-order by candidate_percent limit @number)
-select cit.first_name,cit.last_name from district as dis
-join district_winer as cw on cw.dis_id=dis.id
-join citizen as cit on cit.id=cw.ca_id
-where count(dis.id)>@number
-group by cit.first_name,cit.last_name;
+
+той €кийсь кончений € над ним ц≥лий день сид≥в, п≥зн≥ше до нього повернусь
 
 
 _______________________________________________________________________

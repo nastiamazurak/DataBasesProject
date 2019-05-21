@@ -205,7 +205,7 @@ namespace ElectionProject.Data
             if (!context.Candidate.Any())
             {
                 context.Candidate.AddRange(
-                    new Candidate { Id = 1, Number = 1, ElectionId = 7, CitizenId = 42 },
+                    new Candidate { Id = 1, Number = 1, ElectionId = 7, CitizenId = 44 },
                     new Candidate { Id = 2, Number = 2, ElectionId = 7, CitizenId = 43 }
                 );
                 context.SaveChanges();
