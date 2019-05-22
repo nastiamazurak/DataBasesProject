@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Type = ElectionProject.Models.Type;
+
 namespace ElectionProject.Data
 {
     public class DataInitializer
@@ -291,6 +293,38 @@ namespace ElectionProject.Data
                 );
                 context.SaveChanges();
             }
+
+            
+
+            if (!context.Appeal.Any())
+            {
+                context.Appeal.AddRange(
+                    new Appeal { Id = 1, ElectionId = 7, DistrictId=925 , CitizenId = 1, Text= "new district" },
+                    new Appeal { Id = 2, ElectionId = 7, DistrictId = 927, CitizenId = 4, Text = "new district"  },
+                    new Appeal { Id = 3, ElectionId = 7, DistrictId = 931, CitizenId = 8, Text = "new district"  },
+                    new Appeal { Id = 4, ElectionId = 7, DistrictId = 848, CitizenId = 24, Text = "new district"  },
+                    new Appeal { Id = 5, ElectionId = 7, DistrictId = 927, CitizenId = 44, Text = "make observer" },
+                    new Appeal { Id = 6, ElectionId = 7, DistrictId = 925, CitizenId = 43, Text = "make observer" },
+                    new Appeal { Id = 7, ElectionId = 7, DistrictId = 951, CitizenId = 42, Text = "make observer" },
+                    new Appeal { Id = 8, ElectionId = 7, DistrictId = 951, CitizenId = 41, Text = "make observer" }
+
+                );
+                context.SaveChanges();
+            }
+
+
+            if (!context.Complaint.Any())
+            {
+                context.Complaint.AddRange(
+                    new Complaint { Id = 1,  ElectionId = 7, DistrictId=925 , ObserverId = 1, Text= "bad result" },
+                    new Complaint { Id = 2, ElectionId = 7, DistrictId = 927, ObserverId = 4, Text = "falsifivation" },
+                    new Complaint { Id = 3, ElectionId = 7, DistrictId = 935, ObserverId = 5, Text = "falsifivation" },
+                    new Complaint { Id = 4, ElectionId = 7, DistrictId = 880, ObserverId = 7, Text = "superFluous votes" }
+
+                );
+                context.SaveChanges();
+            }
         }
+
     }
 }
