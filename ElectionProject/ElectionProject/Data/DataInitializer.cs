@@ -1,9 +1,7 @@
 ﻿
 using ElectionProject.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Type = ElectionProject.Models.Type;
 
 namespace ElectionProject.Data
@@ -14,7 +12,7 @@ namespace ElectionProject.Data
         {
 
 
-           context.Database.EnsureCreated();
+            context.Database.EnsureCreated();
 
             if (!context.Circuit.Any())
             {
@@ -64,30 +62,30 @@ namespace ElectionProject.Data
             if (!context.Citizen.Any())
             {
                 context.Citizen.AddRange(
-                    new Citizen { Id = 1, FirstName = "Анастасія", LastName = "Кушнір", MiddleName = "Андріївна", BirthDate = new DateTime(2000, 7, 12), Ipn = "123456542", DistrictId = 925},
-                    new Citizen { Id = 2, FirstName = "Анастасія", LastName = "Мазурак", MiddleName = "Романівна", BirthDate = new DateTime(2000, 9, 25), Ipn = "122525345", DistrictId =927},
-                    new Citizen { Id = 3, FirstName = "Андрій", LastName = "Шкробут", MiddleName = "Валтерович", BirthDate = new DateTime(2000, 7, 1), Ipn = "132525348", DistrictId =927},
-                    new Citizen { Id = 4, FirstName = "Володимир", LastName = "Дишкант", MiddleName = "Зеновійович", BirthDate = new DateTime(2000, 7, 25), Ipn = "232525346", DistrictId =927},
-                    new Citizen { Id = 5, FirstName = "Михайло", LastName = "Демчишин", MiddleName = "Володимирович", BirthDate = new DateTime(2000, 1, 24), Ipn = "322625349", DistrictId =931},
-                    new Citizen { Id = 6, FirstName = "Василь", LastName = "Кривоніс", MiddleName = "Романович", BirthDate = new DateTime(1966, 10, 25), Ipn = "322525348", DistrictId =931},
-                    new Citizen { Id = 7, FirstName = "Cтепан", LastName = "Холоднокровний", MiddleName = "Йосифович", BirthDate = new DateTime(1967, 12, 26), Ipn = "622525646", DistrictId = 931},
-                    new Citizen { Id = 8, FirstName = "Іван", LastName = "Кравченко", MiddleName = "Остапович", BirthDate = new DateTime(1977, 6, 20), Ipn = "122524346", DistrictId =935},
-                    new Citizen { Id = 9, FirstName = "Тадей", LastName = "Розумний", MiddleName = "Іванович", BirthDate = new DateTime(1956, 9, 24), Ipn = "522525345", DistrictId =935},
+                    new Citizen { Id = 1, FirstName = "Анастасія", LastName = "Кушнір", MiddleName = "Андріївна", BirthDate = new DateTime(2000, 7, 12), Ipn = "123456542", DistrictId = 925 },
+                    new Citizen { Id = 2, FirstName = "Анастасія", LastName = "Мазурак", MiddleName = "Романівна", BirthDate = new DateTime(2000, 9, 25), Ipn = "122525345", DistrictId = 927 },
+                    new Citizen { Id = 3, FirstName = "Андрій", LastName = "Шкробут", MiddleName = "Валтерович", BirthDate = new DateTime(2000, 7, 1), Ipn = "132525348", DistrictId = 927 },
+                    new Citizen { Id = 4, FirstName = "Володимир", LastName = "Дишкант", MiddleName = "Зеновійович", BirthDate = new DateTime(2000, 7, 25), Ipn = "232525346", DistrictId = 927 },
+                    new Citizen { Id = 5, FirstName = "Михайло", LastName = "Демчишин", MiddleName = "Володимирович", BirthDate = new DateTime(2000, 1, 24), Ipn = "322625349", DistrictId = 931 },
+                    new Citizen { Id = 6, FirstName = "Василь", LastName = "Кривоніс", MiddleName = "Романович", BirthDate = new DateTime(1966, 10, 25), Ipn = "322525348", DistrictId = 931 },
+                    new Citizen { Id = 7, FirstName = "Cтепан", LastName = "Холоднокровний", MiddleName = "Йосифович", BirthDate = new DateTime(1967, 12, 26), Ipn = "622525646", DistrictId = 931 },
+                    new Citizen { Id = 8, FirstName = "Іван", LastName = "Кравченко", MiddleName = "Остапович", BirthDate = new DateTime(1977, 6, 20), Ipn = "122524346", DistrictId = 935 },
+                    new Citizen { Id = 9, FirstName = "Тадей", LastName = "Розумний", MiddleName = "Іванович", BirthDate = new DateTime(1956, 9, 24), Ipn = "522525345", DistrictId = 935 },
                     new Citizen { Id = 10, FirstName = "Марко", LastName = "Сотник", MiddleName = "Степанович", BirthDate = new DateTime(1970, 11, 26), Ipn = "722725378", DistrictId = 935 },
-                    new Citizen { Id = 11, FirstName = "Ярослав", LastName = "Недолугий", MiddleName = "Романович", BirthDate = new DateTime(2000, 2, 19), Ipn = "332523343", DistrictId =877},
-                    new Citizen { Id = 12, FirstName = "Ілля", LastName = "Малкович", MiddleName = "Абдулович", BirthDate = new DateTime(2000, 9, 12), Ipn = "922527346", DistrictId = 877},
-                    new Citizen { Id = 13, FirstName = "Олеся", LastName = "Кушнір", MiddleName = "Олегівна", BirthDate = new DateTime(1978, 2, 19), Ipn = "123466543", DistrictId = 877},
-                    new Citizen { Id = 14, FirstName = "Олег", LastName = "Ващишин", MiddleName = "Тарасович", BirthDate = new DateTime(1975, 3, 19), Ipn = "523466543", DistrictId =878},
-                    new Citizen { Id = 15, FirstName = "Марія", LastName = "Чабанна", MiddleName = "Ярославівна", BirthDate = new DateTime(1974, 4, 29), Ipn = "723476547", DistrictId = 878},
-                    new Citizen { Id = 16, FirstName = "Тетяна", LastName = "Сліпачук", MiddleName = "Володимирівна", BirthDate = new DateTime(1968, 5, 25), Ipn = "623476546", DistrictId = 878},
-                    new Citizen { Id = 17, FirstName = "Роман", LastName = "Куновский", MiddleName = "Володимирович", BirthDate = new DateTime(1969, 5, 26), Ipn = "924476646", DistrictId = 880},
+                    new Citizen { Id = 11, FirstName = "Ярослав", LastName = "Недолугий", MiddleName = "Романович", BirthDate = new DateTime(2000, 2, 19), Ipn = "332523343", DistrictId = 877 },
+                    new Citizen { Id = 12, FirstName = "Ілля", LastName = "Малкович", MiddleName = "Абдулович", BirthDate = new DateTime(2000, 9, 12), Ipn = "922527346", DistrictId = 877 },
+                    new Citizen { Id = 13, FirstName = "Олеся", LastName = "Кушнір", MiddleName = "Олегівна", BirthDate = new DateTime(1978, 2, 19), Ipn = "123466543", DistrictId = 877 },
+                    new Citizen { Id = 14, FirstName = "Олег", LastName = "Ващишин", MiddleName = "Тарасович", BirthDate = new DateTime(1975, 3, 19), Ipn = "523466543", DistrictId = 878 },
+                    new Citizen { Id = 15, FirstName = "Марія", LastName = "Чабанна", MiddleName = "Ярославівна", BirthDate = new DateTime(1974, 4, 29), Ipn = "723476547", DistrictId = 878 },
+                    new Citizen { Id = 16, FirstName = "Тетяна", LastName = "Сліпачук", MiddleName = "Володимирівна", BirthDate = new DateTime(1968, 5, 25), Ipn = "623476546", DistrictId = 878 },
+                    new Citizen { Id = 17, FirstName = "Роман", LastName = "Куновский", MiddleName = "Володимирович", BirthDate = new DateTime(1969, 5, 26), Ipn = "924476646", DistrictId = 880 },
                     new Citizen { Id = 18, FirstName = "Марія", LastName = "Лопушанська", MiddleName = "Петрівна", BirthDate = new DateTime(1964, 4, 27), Ipn = "324475646", DistrictId = 880 },
-                    new Citizen { Id = 19, FirstName = "Юрій", LastName = "Трухан", MiddleName = "Степанович", BirthDate = new DateTime(1950, 5, 27), Ipn = "524475648", DistrictId = 880},
+                    new Citizen { Id = 19, FirstName = "Юрій", LastName = "Трухан", MiddleName = "Степанович", BirthDate = new DateTime(1950, 5, 27), Ipn = "524475648", DistrictId = 880 },
                     new Citizen { Id = 20, FirstName = "Тамара", LastName = "Дзюмба", MiddleName = "Петрівна", BirthDate = new DateTime(1960, 3, 5), Ipn = "724575649", DistrictId = 883 },
-                    new Citizen { Id = 21, FirstName = "Ярина", LastName = "Дзюмбочок", MiddleName = "Євгенівна", BirthDate = new DateTime(1965, 11, 15), Ipn = "624575639", DistrictId = 883},
-                    new Citizen { Id = 22, FirstName = "Віталій", LastName = "Воробйов", MiddleName = "Сергійович", BirthDate = new DateTime(1966, 12, 14), Ipn = "824555635", DistrictId = 883},
+                    new Citizen { Id = 21, FirstName = "Ярина", LastName = "Дзюмбочок", MiddleName = "Євгенівна", BirthDate = new DateTime(1965, 11, 15), Ipn = "624575639", DistrictId = 883 },
+                    new Citizen { Id = 22, FirstName = "Віталій", LastName = "Воробйов", MiddleName = "Сергійович", BirthDate = new DateTime(1966, 12, 14), Ipn = "824555635", DistrictId = 883 },
                     new Citizen { Id = 23, FirstName = "Олег", LastName = "Ващишин", MiddleName = "Тарасович", BirthDate = new DateTime(1976, 9, 15), Ipn = "834657637", DistrictId = 848 },
-                    new Citizen { Id = 24, FirstName = "Марія", LastName = "Горбань", MiddleName = "Констянтинівна", BirthDate = new DateTime(1973, 9, 21), Ipn = "322425348", DistrictId =848 },
+                    new Citizen { Id = 24, FirstName = "Марія", LastName = "Горбань", MiddleName = "Констянтинівна", BirthDate = new DateTime(1973, 9, 21), Ipn = "322425348", DistrictId = 848 },
                     new Citizen { Id = 25, FirstName = "Олександра", LastName = "Присяжник", MiddleName = "Олегівна", BirthDate = new DateTime(1979, 10, 1), Ipn = "342525348", DistrictId = 848 },
                     new Citizen { Id = 26, FirstName = "Андрій", LastName = "Присяжник", MiddleName = "Романович", BirthDate = new DateTime(1989, 11, 25), Ipn = "322525234", DistrictId = 850 },
                     new Citizen { Id = 27, FirstName = "Ігор", LastName = "Присяжник", MiddleName = "Романович", BirthDate = new DateTime(1989, 11, 25), Ipn = "384930272", DistrictId = 850 },
@@ -98,16 +96,15 @@ namespace ElectionProject.Data
                     new Citizen { Id = 32, FirstName = "Вікторія", LastName = "Чумакевич", MiddleName = "Вікторівна", BirthDate = new DateTime(1967, 6, 20), Ipn = "354356774", DistrictId = 855 },
                     new Citizen { Id = 33, FirstName = "Володимир", LastName = "Куриляк", MiddleName = "Романович", BirthDate = new DateTime(1998, 6, 6), Ipn = "435463356", DistrictId = 855 },
                     new Citizen { Id = 34, FirstName = "Петро", LastName = "Фурдичко", MiddleName = "Олегович", BirthDate = new DateTime(1976, 10, 8), Ipn = "423675657", DistrictId = 939 },
-                    new Citizen { Id = 35, FirstName = "Василь", LastName = "Тимчишин", MiddleName = "Романович", BirthDate = new DateTime(1964, 8, 10), Ipn = "243454653", DistrictId = 951},
+                    new Citizen { Id = 35, FirstName = "Василь", LastName = "Тимчишин", MiddleName = "Романович", BirthDate = new DateTime(1964, 8, 10), Ipn = "243454653", DistrictId = 951 },
                     new Citizen { Id = 36, FirstName = "Роман", LastName = "Кривий", MiddleName = "Романович", BirthDate = new DateTime(1976, 8, 13), Ipn = "243565363", DistrictId = 939 },
                     new Citizen { Id = 37, FirstName = "Настя", LastName = "Мудра", MiddleName = "Романівна", BirthDate = new DateTime(1965, 4, 10), Ipn = "256465374", DistrictId = 943 },
                     new Citizen { Id = 38, FirstName = "Наталя", LastName = "Ліб", MiddleName = "Марківна", BirthDate = new DateTime(1993, 7, 7), Ipn = "354546754", DistrictId = 943 },
                     new Citizen { Id = 39, FirstName = "Марко", LastName = "Бучковський", MiddleName = "Романович", BirthDate = new DateTime(1977, 8, 19), Ipn = "235465325", DistrictId = 944 },
                     new Citizen { Id = 40, FirstName = "Владислав", LastName = "Панчак", MiddleName = "Андрійович", BirthDate = new DateTime(1973, 6, 15), Ipn = "768543674", DistrictId = 944 },
                     new Citizen { Id = 41, FirstName = "Ярослав", LastName = "Бориско", MiddleName = "Романович", BirthDate = new DateTime(1951, 1, 10), Ipn = "543465476", DistrictId = 951 },
-                    new Citizen { Id = 42, FirstName = "Роман ", LastName = "Царь", MiddleName = "Романович", BirthDate = new DateTime(1964, 1, 11), Ipn = "435464355", DistrictId = 951 },
-                    new Citizen { Id = 43, FirstName = "Петро ", LastName = "Порошенко", MiddleName = "Олексійович", BirthDate = new DateTime(1965, 09, 26), Ipn = "235474357", DistrictId =925 },
-                    new Citizen { Id = 44, FirstName = "Володимир ", LastName = "Зеленський", MiddleName = "Олександрович", BirthDate = new DateTime(1978, 01, 25), Ipn = "535575355", DistrictId = 927 }
+                    new Citizen { Id = 42, FirstName = "Роман ", LastName = "Царь", MiddleName = "Романович", BirthDate = new DateTime(1964, 1, 11), Ipn = "435464355", DistrictId = 951 }
+
                 );
                 context.SaveChanges();
             }
@@ -120,7 +117,7 @@ namespace ElectionProject.Data
                     new Election { Id = 3, Name = "Вибори президента", Year = 1999, Tour = 2, StartDate = new DateTime(1999, 10, 31), EndDate = new DateTime(1999, 11, 14), HeadOfCvk = 7 },
                     new Election { Id = 4, Name = "Вибори президента", Year = 2004, Tour = 2, StartDate = new DateTime(2004, 10, 31), EndDate = new DateTime(2004, 12, 26), HeadOfCvk = 8 },
                     new Election { Id = 5, Name = "Вибори президента", Year = 2009, Tour = 2, StartDate = new DateTime(2004, 1, 17), EndDate = new DateTime(2004, 2, 7), HeadOfCvk = 14 },
-                    new Election { Id = 6, Name = "Позачергові вибори",Year = 2014, Tour = 1, StartDate = new DateTime(2014, 5, 25), EndDate = new DateTime(2014, 5, 30), HeadOfCvk = 15 },
+                    new Election { Id = 6, Name = "Позачергові вибори", Year = 2014, Tour = 1, StartDate = new DateTime(2014, 5, 25), EndDate = new DateTime(2014, 5, 30), HeadOfCvk = 15 },
                     new Election { Id = 7, Name = "Вибори президента", Year = 2019, Tour = 2, StartDate = new DateTime(2019, 3, 30), EndDate = new DateTime(2019, 4, 21), HeadOfCvk = 16 }
                 );
                 context.SaveChanges();
@@ -294,20 +291,28 @@ namespace ElectionProject.Data
                 context.SaveChanges();
             }
 
-            
+            if (!context.Type.Any())
+            {
+                context.Type.AddRange(
+                    new Type { Id = 1, Name = "Пропозиція" },
+                    new Type { Id = 2, Name = "Клопотання" },
+                    new Type { Id = 3, Name = "Скарга" },
+                    new Type { Id = 4, Name = "Електронна петиція" }
+                );
+                context.SaveChanges();
+            }
 
             if (!context.Appeal.Any())
             {
                 context.Appeal.AddRange(
-                    new Appeal { Id = 1, ElectionId = 7, DistrictId=925 , CitizenId = 1, Text= "new district" },
-                    new Appeal { Id = 2, ElectionId = 7, DistrictId = 927, CitizenId = 4, Text = "new district"  },
-                    new Appeal { Id = 3, ElectionId = 7, DistrictId = 931, CitizenId = 8, Text = "new district"  },
-                    new Appeal { Id = 4, ElectionId = 7, DistrictId = 848, CitizenId = 24, Text = "new district"  },
-                    new Appeal { Id = 5, ElectionId = 7, DistrictId = 927, CitizenId = 44, Text = "make observer" },
-                    new Appeal { Id = 6, ElectionId = 7, DistrictId = 925, CitizenId = 43, Text = "make observer" },
-                    new Appeal { Id = 7, ElectionId = 7, DistrictId = 951, CitizenId = 42, Text = "make observer" },
-                    new Appeal { Id = 8, ElectionId = 7, DistrictId = 951, CitizenId = 41, Text = "make observer" }
-
+                    new Appeal { Id = 1, ElectionId = 7, DistrictId = 925, CitizenId = 1, TypeId = 1, Text = "Нова дільниця" },
+                    new Appeal { Id = 2, ElectionId = 7, DistrictId = 927, CitizenId = 4, TypeId = 1, Text = "Нова дільниця" },
+                    new Appeal { Id = 3, ElectionId = 7, DistrictId = 931, CitizenId = 8, TypeId = 1, Text = "Нова дільниця" },
+                    new Appeal { Id = 4, ElectionId = 7, DistrictId = 848, CitizenId = 24, TypeId = 1, Text = "Нова дільниця" },
+                    new Appeal { Id = 5, ElectionId = 7, DistrictId = 927, CitizenId = 39, TypeId = 2, Text = "Поставити наглядача" },
+                    new Appeal { Id = 6, ElectionId = 7, DistrictId = 925, CitizenId = 35, TypeId = 2, Text = "Поставити наглядача" },
+                    new Appeal { Id = 7, ElectionId = 7, DistrictId = 951, CitizenId = 42, TypeId = 2, Text = "Поставити наглядача" },
+                    new Appeal { Id = 8, ElectionId = 7, DistrictId = 951, CitizenId = 41, TypeId = 2, Text = "Поставити наглядача" }
                 );
                 context.SaveChanges();
             }
@@ -316,11 +321,10 @@ namespace ElectionProject.Data
             if (!context.Complaint.Any())
             {
                 context.Complaint.AddRange(
-                    new Complaint { Id = 1,  ElectionId = 7, DistrictId=925 , ObserverId = 1, Text= "bad result" },
-                    new Complaint { Id = 2, ElectionId = 7, DistrictId = 927, ObserverId = 4, Text = "falsifivation" },
-                    new Complaint { Id = 3, ElectionId = 7, DistrictId = 935, ObserverId = 5, Text = "falsifivation" },
-                    new Complaint { Id = 4, ElectionId = 7, DistrictId = 880, ObserverId = 7, Text = "superFluous votes" }
-
+                    new Complaint { Id = 1, ElectionId = 7, DistrictId = 925, ObserverId = 1, TypeId = 3, Text = "Неправильні результати" },
+                    new Complaint { Id = 2, ElectionId = 7, DistrictId = 927, ObserverId = 4, TypeId = 3, Text = "Фальсифікація" },
+                    new Complaint { Id = 3, ElectionId = 7, DistrictId = 935, ObserverId = 5, TypeId = 3, Text = "Фальсифікація" },
+                    new Complaint { Id = 4, ElectionId = 7, DistrictId = 880, ObserverId = 7, TypeId = 3, Text = "Зайві голоси" }
                 );
                 context.SaveChanges();
             }
