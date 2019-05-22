@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ElectionProject.Models.Candidate>
+﻿@model IEnumerable<ElectionProject.Models.Vote>
 
 @{
     ViewData["Title"] = "Vote";
@@ -27,32 +27,32 @@
     </thead>
 
     <tbody>
-        
-        @foreach (var item in Model)
+
+        @*foreach (var item in Model)
             {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Citizen.LastName)
+                    @Html.DisplayFor(modelItem => item.Candidate.Citizen.LastName)
                 </td>
                 <td>
-                    <input type="radio" name="ivan" />
+                    <input type="checkbox" />
                     &nbsp;
                 </td>
             </tr>
 
             }
-    <div class="container">
-        <button type="button" class="btn btn-default" value="ViewBag.ivan" >Підтвердити</button>
-    </div>
+        *@
 
 
 
     </tbody>
 </table>
 
-
+<div class="container">
+    <button type="button" class="btn btn-default">Підтвердити</button>
+</div>
 
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ElectionProject.Models.Election>
+﻿@model IEnumerable<ElectionProject.Models.Vote>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,17 +8,8 @@
     <br> <br />
     <h2>Вибори, доступні для голосування</h2>
     <br> <br />
-         <ul>
-             
-             @foreach (var item in Model)
-             {
-                 var param = new Dictionary<string, string>
-                 {
-                     {"electionId", item.Id.ToString()}
-                 };
-                 <li><a asp-area="" asp-controller="Vote" asp-action="Vote" asp-all-route-data="param">@Html.DisplayFor(x => item.Name)</a></li>
-                 
-             }
+    <ul>
+        <li ><a href="http://localhost:5000/Vote/Vote">Вибори Президента України</a></li>
 
-         </ul>
+    </ul>
 </body>

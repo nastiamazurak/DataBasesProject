@@ -1,8 +1,8 @@
 ﻿using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ElectionProject.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,21 +12,19 @@ namespace ElectionProject.Controllers
 
     public class ElectionsController : Controller
     {
-        private readonly ElectionContext _context;
-        private readonly IElectionService _electionService;
 
-        public ElectionsController(ElectionContext context, IElectionService electionService)
+
+        private readonly ElectionContext _context;
+
+        public ElectionsController(ElectionContext context)
         {
             _context = context;
-            _electionService = electionService;
         }
 
         // GET: Circuits
-        public  IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            
-            return View(_context.Election.ToList());
-           // 
+            return View(await _context.Election.ToListAsync());
         }
 
         // GET: Circuits/Details/5
