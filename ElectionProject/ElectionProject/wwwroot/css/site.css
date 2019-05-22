@@ -99,7 +99,7 @@ a {
     }
 
         .navbar .container a:hover {
-            color: grey !important;
+            color: #337ab7 !important;
         }
 
 .navbar-brand {
