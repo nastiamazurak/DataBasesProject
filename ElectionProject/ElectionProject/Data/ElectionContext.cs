@@ -1,8 +1,9 @@
 ﻿using System;
+using ElectionProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace ElectionProject.Models
+namespace ElectionProject
 {
     public partial class ElectionContext : DbContext
     {
@@ -17,6 +18,7 @@ namespace ElectionProject.Models
 
         public virtual DbSet<Appeal> Appeal { get; set; }
         public virtual DbSet<Candidate> Candidate { get; set; }
+        public virtual DbSet<CheckUpdates> CheckUpdates { get; set; }
         public virtual DbSet<Circuit> Circuit { get; set; }
         public virtual DbSet<CircuitHead> CircuitHead { get; set; }
         public virtual DbSet<Citizen> Citizen { get; set; }
@@ -25,14 +27,31 @@ namespace ElectionProject.Models
         public virtual DbSet<DistrictHead> DistrictHead { get; set; }
         public virtual DbSet<Election> Election { get; set; }
         public virtual DbSet<Observer> Observer { get; set; }
-        public virtual DbSet<Type> Type { get; set; }
+        public virtual DbSet<Models.Type> Type { get; set; }
         public virtual DbSet<Vote> Vote { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Election;Username=postgres;Password=wolf");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Appeal>(entity =>
             {
                 entity.ToTable("appeal");
+
+                entity.HasIndex(e => e.CitizenId);
+
+                entity.HasIndex(e => e.DistrictId);
+
+                entity.HasIndex(e => e.ElectionId);
+
+                entity.HasIndex(e => e.TypeId);
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -77,6 +96,10 @@ namespace ElectionProject.Models
             {
                 entity.ToTable("candidate");
 
+                entity.HasIndex(e => e.CitizenId);
+
+                entity.HasIndex(e => e.ElectionId);
+
                 entity.HasIndex(e => e.Number)
                     .HasName("candidate_number_key")
                     .IsUnique();
@@ -100,6 +123,24 @@ namespace ElectionProject.Models
                     .HasForeignKey(d => d.ElectionId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("candidate_election_id_fkey");
+            });
+
+            modelBuilder.Entity<CheckUpdates>(entity =>
+            {
+                entity.ToTable("check_updates");
+
+                entity.HasIndex(e => e.CitizenId);
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CitizenId).HasColumnName("citizen_id");
+
+                entity.Property(e => e.UpdatesCount).HasColumnName("updates_count");
+
+                entity.HasOne(d => d.Citizen)
+                    .WithMany(p => p.CheckUpdates)
+                    .HasForeignKey(d => d.CitizenId)
+                    .HasConstraintName("check_updates_citizen_id_fkey");
             });
 
             modelBuilder.Entity<Circuit>(entity =>
@@ -134,6 +175,12 @@ namespace ElectionProject.Models
             {
                 entity.ToTable("circuit_head");
 
+                entity.HasIndex(e => e.CircuitId);
+
+                entity.HasIndex(e => e.CitizenId);
+
+                entity.HasIndex(e => e.ElectionId);
+
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CircuitId).HasColumnName("circuit_id");
@@ -165,8 +212,18 @@ namespace ElectionProject.Models
             {
                 entity.ToTable("citizen");
 
+                entity.HasIndex(e => e.DistrictId);
+
+                entity.HasIndex(e => e.Email)
+                    .HasName("uniquemail")
+                    .IsUnique();
+
                 entity.HasIndex(e => e.Ipn)
                     .HasName("citizen_ipn_key")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Password)
+                    .HasName("uniquepassword")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -174,6 +231,12 @@ namespace ElectionProject.Models
                 entity.Property(e => e.BirthDate)
                     .HasColumnName("birth_date")
                     .HasColumnType("date");
+
+                entity.Property(e => e.DistrictId).HasColumnName("district_id");
+
+                entity.Property(e => e.Email)
+                    .HasColumnName("email")
+                    .HasColumnType("character varying(40)");
 
                 entity.Property(e => e.FirstName)
                     .IsRequired()
@@ -194,11 +257,28 @@ namespace ElectionProject.Models
                     .IsRequired()
                     .HasColumnName("middle_name")
                     .HasColumnType("character varying(30)");
+
+                entity.Property(e => e.Password)
+                    .HasColumnName("password")
+                    .HasColumnType("character varying(30)");
+
+                entity.HasOne(d => d.District)
+                    .WithMany(p => p.Citizen)
+                    .HasForeignKey(d => d.DistrictId)
+                    .HasConstraintName("fk_citizen_district");
             });
 
             modelBuilder.Entity<Complaint>(entity =>
             {
                 entity.ToTable("complaint");
+
+                entity.HasIndex(e => e.DistrictId);
+
+                entity.HasIndex(e => e.ElectionId);
+
+                entity.HasIndex(e => e.ObserverId);
+
+                entity.HasIndex(e => e.TypeId);
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -247,6 +327,8 @@ namespace ElectionProject.Models
                     .HasName("district_address_key")
                     .IsUnique();
 
+                entity.HasIndex(e => e.CircuitId);
+
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .ValueGeneratedNever();
@@ -273,6 +355,12 @@ namespace ElectionProject.Models
             modelBuilder.Entity<DistrictHead>(entity =>
             {
                 entity.ToTable("district_head");
+
+                entity.HasIndex(e => e.CitizenId);
+
+                entity.HasIndex(e => e.DistrictId);
+
+                entity.HasIndex(e => e.ElectionId);
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -305,6 +393,8 @@ namespace ElectionProject.Models
             {
                 entity.ToTable("election");
 
+                entity.HasIndex(e => e.HeadOfCvk);
+
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.EndDate)
@@ -336,6 +426,14 @@ namespace ElectionProject.Models
             modelBuilder.Entity<Observer>(entity =>
             {
                 entity.ToTable("observer");
+
+                entity.HasIndex(e => e.CandidateId);
+
+                entity.HasIndex(e => e.CitizenId);
+
+                entity.HasIndex(e => e.DistrictId);
+
+                entity.HasIndex(e => e.ElectionId);
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -372,7 +470,7 @@ namespace ElectionProject.Models
                     .HasConstraintName("observer_election_id_fkey");
             });
 
-            modelBuilder.Entity<Type>(entity =>
+            modelBuilder.Entity<Models.Type>(entity =>
             {
                 entity.ToTable("type");
 
@@ -388,9 +486,15 @@ namespace ElectionProject.Models
             {
                 entity.ToTable("vote");
 
+                entity.HasIndex(e => e.CandidateId);
+
                 entity.HasIndex(e => e.CitizenId)
                     .HasName("vote_citizen_id_key")
                     .IsUnique();
+
+                entity.HasIndex(e => e.DistrictId);
+
+                entity.HasIndex(e => e.ElectionId);
 
                 entity.Property(e => e.Id).HasColumnName("id");
 

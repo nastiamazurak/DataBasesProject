@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,26 +7,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ElectionProject.Models;
-
 namespace ElectionProject.Controllers
 {
-    public class DistrictsController : Controller
+
+    public class ElectionsController : Controller
     {
+
+
         private readonly ElectionContext _context;
 
-        public DistrictsController(ElectionContext context)
+        public ElectionsController(ElectionContext context)
         {
             _context = context;
         }
 
-        // GET: Districts
+        // GET: Circuits
         public async Task<IActionResult> Index()
         {
-            var electionContext = _context.District.Include(d => d.Circuit);
-            return View(await electionContext.ToListAsync());
+            return View(await _context.Election.ToListAsync());
         }
 
-        // GET: Districts/Details/5
+        // GET: Circuits/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,42 +35,39 @@ namespace ElectionProject.Controllers
                 return NotFound();
             }
 
-            var district = await _context.District
-                .Include(d => d.Circuit)
+            var election = await _context.Election
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (district == null)
+            if (election == null)
             {
                 return NotFound();
             }
 
-            return View(district);
+            return View(election);
         }
 
-        // GET: Districts/Create
+        // GET: Circuits/Create
         public IActionResult Create()
         {
-            ViewData["CircuitId"] = new SelectList(_context.Circuit, "Id", "Address");
             return View();
         }
 
-        // POST: Districts/Create
+        // POST: Circuits/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Address,CircuitId")] District district)
+        public async Task<IActionResult> Create([Bind("Id,Name,Year,Tour, StartDate, EndDate, HeadOfCvk")] Election election)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(district);
+                _context.Add(election);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CircuitId"] = new SelectList(_context.Circuit, "Id", "Address", district.CircuitId);
-            return View(district);
+            return View(election);
         }
 
-        // GET: Districts/Edit/5
+        // GET: Circuits/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,23 +75,22 @@ namespace ElectionProject.Controllers
                 return NotFound();
             }
 
-            var district = await _context.District.FindAsync(id);
-            if (district == null)
+            var election = await _context.Election.FindAsync(id);
+            if (election == null)
             {
                 return NotFound();
             }
-            ViewData["CircuitId"] = new SelectList(_context.Circuit, "Id", "Address", district.CircuitId);
-            return View(district);
+            return View(election);
         }
 
-        // POST: Districts/Edit/5
+        // POST: Circuits/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address,CircuitId")] District district)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Year,Tour, StartDate, EndDate, HeadOfCvk")] Election election)
         {
-            if (id != district.Id)
+            if (id != election.Id)
             {
                 return NotFound();
             }
@@ -101,12 +99,12 @@ namespace ElectionProject.Controllers
             {
                 try
                 {
-                    _context.Update(district);
+                    _context.Update(election);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DistrictExists(district.Id))
+                    if (!ElectionExists(election.Id))
                     {
                         return NotFound();
                     }
@@ -117,11 +115,10 @@ namespace ElectionProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CircuitId"] = new SelectList(_context.Circuit, "Id", "Address", district.CircuitId);
-            return View(district);
+            return View(election);
         }
 
-        // GET: Districts/Delete/5
+        // GET: Circuits/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,32 +126,32 @@ namespace ElectionProject.Controllers
                 return NotFound();
             }
 
-            var district = await _context.District
-                .Include(d => d.Circuit)
+            var election = await _context.Circuit
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (district == null)
+            if (election == null)
             {
                 return NotFound();
             }
 
-            return View(district);
+            return View(election);
         }
 
-        // POST: Districts/Delete/5
+        // POST: Circuits/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var district = await _context.District.FindAsync(id);
-            _context.District.Remove(district);
+            var election = await _context.Election.FindAsync(id);
+            _context.Election.Remove(election);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DistrictExists(int id)
+        private bool ElectionExists(int id)
         {
-            return _context.District.Any(e => e.Id == id);
+            return _context.Election.Any(e => e.Id == id);
         }
     }
 }
+
 

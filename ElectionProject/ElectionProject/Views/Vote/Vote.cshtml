@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ElectionProject.Models.Vote>
+
+@{
+    ViewData["Title"] = "Vote";
+}
+
+<br> <br />
+<h2>Щоб проголосувати, виберіть кандидата</h2>
+
+<br><br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                №
+            </td>
+            <td>
+                Кандидат
+            </td>
+            <td>
+                Голос
+            <td />
+            <td></td>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @*foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Candidate.Citizen.LastName)
+                </td>
+                <td>
+                    <input type="checkbox" />
+                    &nbsp;
+                </td>
+            </tr>
+
+            }
+        *@
+
+
+
+    </tbody>
+</table>
+
+<div class="container">
+    <button type="button" class="btn btn-default">Підтвердити</button>
+</div>
+
+

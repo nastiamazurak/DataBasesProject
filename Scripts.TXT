@@ -55,17 +55,18 @@ ___________________________________________________
 надати головi ЦВК остаточнi результати виборiв в окрузi (пiсля виборiв);
 
 with sum_of_candidates as(select count(id) as sum1 from vote),
-sum_of_votes as(select candidate_id,count(candidate_id)as sum2 from vote group by candidate_id)
+sum_of_votes as(select cir.id as cir_id,candidate_id,count(candidate_id)as sum2 from vote as v
+				join district as dis on v.district_id=dis.id 
+				join circuit as cir on cir.id=dis.circuit_id 
+				group by cir.id, candidate_id
+			   )
 select cir.name,cit.first_name,cit.first_name,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
 from sum_of_votes as sov join candidate as ca on ca.id=sov.candidate_id
 join citizen as cit on cit.id=ca.citizen_id 
 join election as el on el.id=ca.election_id
-join vote as v on v.citizen_id=cit.id
-join district as dis on dis.id=v.district_id
-join circuit as cir on cir.id=dis.circuit_id
+join circuit as cir on cir.id=sov.cir_id
 where el.id=@name and el.tour=@tour and el.year=@year and cir.name=@name
 group by cir.name,cit.first_name,cit.first_name,candidate_percent;
-
 ___________________________________________________
 переглянути перелiк виборцiв вiртуальних дiльниць округу (у будь-який час);
 
@@ -123,13 +124,211 @@ ______________________________________________________
 надати головi окружної комiсiї остаточнi результати виборiв у дiльницi;
 
 with sum_of_candidates as(select count(id) as sum1 from vote),
-sum_of_votes as(select candidate_id,count(candidate_id)as sum2 from vote group by candidate_id)
-select cit.first_name,cit.first_name,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+sum_of_votes as(select dis.id as dis_id,candidate_id,count(candidate_id)as sum2 from vote as v
+				join district as dis on v.district_id=dis.id 
+				group by dis.id, candidate_id
+			   )
+select dis.name,cit.first_name,cit.first_name,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
 from sum_of_votes as sov join candidate as ca on ca.id=sov.candidate_id
 join citizen as cit on cit.id=ca.citizen_id 
 join election as el on el.id=ca.election_id
-join district as dis on dis.id=v.district_id
-where el.id=@name and el.tour=@tour and el.year=@year and dis.name=@name
-group by cit.first_name,cit.first_name,candidate_percent;
+join district as dis on dis.id=sov.dis_id
+group by dis.name,cit.first_name,cit.first_name,candidate_percent;
 
+
+
+_______________________________________________________________________
+показати усi округи та для кожного з них: кiлькiсть виборцiв, що проголосували, переможця
+у окрузi та його результат;
+
+with sum_of_candidates as(select count(id) as sum1 from vote),
+sum_of_votes as(select cir.id as cir_id, candidate_id, count(candidate_id) as sum2 from vote as v
+				join district as dis on v.district_id=dis.id 
+				join circuit as cir on cir.id=dis.circuit_id
+				group by cir.id, candidate_id),
+circuit_count as (select cir.id as cir_id,ca.id as ca_id,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+from sum_of_votes as sov 
+join candidate as ca on ca.id=sov.candidate_id
+join election as el on el.id=ca.election_id
+join circuit as cir on cir.id=sov.cir_id
+where el.id=@name and el.tour=@tour and el.year=@year),
+circuit_winner as(select f.cir_id,f.ca_id,f.candidate_percent from(select cir_id,max(candidate_percent) as max_c from circuit_count
+group by cir_id) as x inner join circuit_count f on f.cir_id=x.cir_id and f.candidate_percent=x.max_c)
+select cir.name,count(v.id) as electorate_count,cit.first_name,cit.last_name,cw.candidate_percent
+from circuit_winner as cw
+join candidate as ca on ca.id=cw.ca_id
+join citizen as cit on cit.id=ca.citizen_id 
+join circuit as cir on cir.id=cw.cir_id
+join district as dis on dis.circuit_id=cir.id
+join vote as v on v.district_id=dis.id
+group by cir.name,cit.first_name,cit.last_name,cw.candidate_percent;
+
+____________________________________________________________________________
+показати усi дiльницi обраного округу O та для кожної з них: кiлькiсть виборцiв, що про-
+голосували, переможця у дiльницi та його результат;
+
+
+
+with sum_of_candidates as(select count(id) as sum1 from vote),
+sum_of_votes as(select dis.id as dis_id, candidate_id, count(candidate_id) as sum2 from vote as v
+				join district as dis on v.district_id=dis.id 
+				group by dis.id, candidate_id),
+district_count as (select dis.id as dis_id,ca.id as ca_id,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+from sum_of_votes as sov 
+join candidate as ca on ca.id=sov.candidate_id
+join election as el on el.id=ca.election_id
+join district as dis on dis.id=sov.dis_id
+join circuit as cir on cir.id=dis.circuit_id
+where where el.id=@name and el.tour=@tour and el.year=@year and cir.name=@name),
+district_winner as(select f.dis_id,f.ca_id,f.candidate_percent from(select dis_id,max(candidate_percent) as max_c from district_count
+group by dis_id) as x inner join district_count f on f.dis_id=x.dis_id and f.candidate_percent=x.max_c)
+select dis.name,count(v.id) as electorate_count,cit.first_name,cit.last_name,cw.candidate_percent
+from district_winner as cw
+join candidate as ca on ca.id=cw.ca_id
+join citizen as cit on cit.id=ca.citizen_id 
+join district as dis on dis.id=cw.dis_id
+join vote as v on v.district_id=dis.id
+group by dis.name,cit.first_name,cit.last_name,cw.candidate_percent
+order by dis.name,cw.candidate_percent desc;
+
+_______________________________________________________________________________________
+знайти кандидатiв, якi отримали принаймнi P вiдсоткiв голосiв;
+
+with sum_of_candidates as(select count(id) as sum1 from vote),
+sum_of_votes as(select candidate_id,count(candidate_id)as sum2 from vote group by candidate_id)
+select cit.first_name,cit.last_name 
+from sum_of_votes as sov join candidate as ca on ca.id=sov.candidate_id
+join citizen as cit on cit.id=ca.citizen_id 
+join election as el on el.id=ca.election_id
+where el.id=@name and el.tour=@tour and el.year=@year and (cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)>45
+group by cit.first_name,cit.last_name;
+
+
+__________________________________________________________________________________________________
+знайти кандидатiв, якi перемогли у хоча б N вiртуальних округах;
+
+with sum_of_candidates as(select count(id) as sum1 from vote),
+sum_of_votes as(select cir.id as cir_id, candidate_id, count(candidate_id) as sum2 from vote as v
+				join district as dis on v.district_id=dis.id 
+				join circuit as cir on cir.id=dis.circuit_id
+				group by cir.id, candidate_id),
+circuit_count as (select cir.id as cir_id,ca.id as ca_id,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+from sum_of_votes as sov 
+join candidate as ca on ca.id=sov.candidate_id
+join election as el on el.id=ca.election_id
+join circuit as cir on cir.id=sov.cir_id
+where el.id=@name and el.tour=@tour and el.year=@year),
+circuit_winner as(select f.cir_id,f.ca_id,f.candidate_percent from(select cir_id,max(candidate_percent) as max_c from circuit_count
+group by cir_id) as x inner join circuit_count f on f.cir_id=x.cir_id and f.candidate_percent=x.max_c)
+select cit.first_name,cit.last_name from circuit as cir
+join circuit_winner as cw on cw.cir_id=cir.id
+join candidate as ca on ca.id=cw.ca_id
+join citizen as cit on cit.id=ca.citizen_id
+group by cit.first_name,cit.last_name
+having count(cir.id)>=@number;
+
+_____________________________________________________________________
+знайти кандидатiв, якi отримати хоча б P вiдсоткiв голосiв у принаймнi N вiртуальних
+округах;
+
+with sum_of_candidates as(select count(id) as sum1 from vote),
+sum_of_votes as(select cir.id as cir_id, candidate_id, count(candidate_id) as sum2 from vote as v
+				join district as dis on v.district_id=dis.id 
+				join circuit as cir on cir.id=dis.circuit_id
+				group by cir.id, candidate_id),
+circuit_count as (select cir.id as cir_id,ca.id as ca_id,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+from sum_of_votes as sov 
+join candidate as ca on ca.id=sov.candidate_id
+join election as el on el.id=ca.election_id
+join circuit as cir on cir.id=sov.cir_id
+where el.id=@name and el.tour=@tour and el.year=@year),
+circuit_winner as(select cir_id,ca_id,candidate_percent from circuit_count where candidate_percent>@percent)
+select cit.first_name,cit.last_name from circuit as cir
+join circuit_winner as cw on cw.cir_id=cir.id
+join candidate as ca on ca.id=cw.ca_id
+join citizen as cit on cit.id=ca.citizen_id
+group by cit.first_name,cit.last_name
+having count(cir.id)>=@number;
+
+
+_____________________________________________________________________________
+
+знайти кандидатiв, якi посiли одне з перших M мiсць у принаймнi N вiртуальних дiльницях;
+
+
+with sum_of_candidates as(select count(id) as sum1 from vote),
+sum_of_votes as(select cir.id as cir_id, candidate_id, count(candidate_id) as sum2 from vote as v
+				join district as dis on v.district_id=dis.id 
+				join circuit as cir on cir.id=dis.circuit_id
+				group by cir.id, candidate_id),
+circuit_count as(select cir.id as cir_id,ca.id as ca_id,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+from sum_of_votes as sov 
+join candidate as ca on ca.id=sov.candidate_id
+join election as el on el.id=ca.election_id
+join circuit as cir on cir.id=sov.cir_id
+order by cir_id,candidate_percent desc),
+circuit_winners as (select cir_id,ca_id,candidate_percent from 
+(select cir_id,ca_id,candidate_percent, row_number() over
+ (partition by cir_id order by candidate_percent desc)
+ as percent_rank from circuit_count)ranked where percent_rank<=@number)
+select cit.first_name,cit.last_name from circuit as cir
+join circuit_winners as cw on cw.cir_id=cir.id
+join candidate as ca on ca.id=cw.ca_id
+join citizen as cit on cit.id=ca.citizen_id
+group by cit.first_name,cit.last_name
+having count(cir.id)>@number;
+
+_______________________________________________________________________
+переглянути усiх громадян, що не були доданi до жодної вiртуальної дiльницi;
+
+select cit.first_name,cit.last_name,cit.middle_name from citizen as cit
+join vote as v on v.citizen_id=cit.id
+where v.district_id not in(select id from district);
+
+
+_____________________________________________________________________
+переглянути усiх громадян, що проголосували та змiнили свою вiртуальну дiльницю хоча
+б N разiв;
+
+для тої херні я створив нову табличку, і тригер який спрацьовує при зміні 
+віртуальної дільниці і записує потрібні дані в створену табличку
+
+create table check_updates
+(
+	id serial primary key,
+	citizen_id integer,
+	updates_count integer,
+	foreign key (citizen_id) references citizen(id)
+	
+);
+
+CREATE OR REPLACE function update_check()  RETURNS trigger   
+AS $$
+BEGIN 
+	IF new.id in(select citizen_id from check_updates) THEN
+    UPDATE check_updates 
+    SET citizen_id=new.id;
+	UPDATE check_updates
+    SET updates_count = updates_count+1;
+	return new;
+ 	END IF;
+ 	IF new.id not in(select citizen_id from check_updates) THEN
+	insert into check_updates (citizen_id,updates_count) values (new.id,1);
+	return new;
+	end if;
+END;
+$$ LANGUAGE plpgsql ;
+
+CREATE TRIGGER citizen_update
+AFTER UPDATE OF district_id ON citizen
+FOR EACH ROW 
+execute procedure update_check();*/
+
+
+select cit.first_name,cit.last_name,cit.middle_name from citizen as cit
+join check_updates as cu on cit.id=cu.citizen_id
+where cu.updates_count>=@number
+group by cit.first_name,cit.last_name,cit.middle_name;
+
+__________________________________________________________________________
 
