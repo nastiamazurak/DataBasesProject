@@ -26,13 +26,12 @@ namespace ElectionProject.Controllers
         public IActionResult About()
         {
             var sql = @"with sum_of_candidates as(select count(id) as sum1 from vote),
-sum_of_votes as (select candidate_id, count(candidate_id) as sum2 from vote group by candidate_id)
-select 
-from sum_of_votes as sov
-join candidate as ca on ca.id = sov.candidate_id
-join citizen as cit on cit.id = ca.citizen_id
-join election as el on el.id = ca.election_id
-group by cit.first_name,cit.last_name,candidate_percent;";
+                       sum_of_votes as(select candidate_id,count(candidate_id)as sum2 from vote group by candidate_id)
+                       select cit.first_name,cit.last_name,(cast(sov.sum2 as float)/(select sum1 from sum_of_candidates)*100)as candidate_percent 
+                       from sum_of_votes as sov join candidate as ca on ca.id=sov.candidate_id
+                       join citizen as cit on cit.id=ca.citizen_id 
+                       join election as el on el.id=ca.election_id
+                       group by cit.first_name,cit.last_name,candidate_percent;";
             var books = _context.Query<ElectionResult>().FromSql(sql).ToList();
             ViewData["Message"] = "Your application description page.";
             return View(books);
