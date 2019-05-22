@@ -15,6 +15,7 @@ namespace ElectionProject.Models
         public int Number { get; set; }
         public int? ElectionId { get; set; }
         public int CitizenId { get; set; }
+        
 
         public Citizen Citizen { get; set; }
         public Election Election { get; set; }
