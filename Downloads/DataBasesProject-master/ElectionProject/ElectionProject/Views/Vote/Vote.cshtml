@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ElectionProject.Models.VoteProcess>
+
+@{
+    ViewData["Title"] = "Vote";
+}
+
+<br> <br />
+<h2>Щоб проголосувати, виберіть кандидата</h2>
+
+<br><br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                №
+            </td>
+            <td>
+                Ім'я
+            </td>
+            <td>
+                Прізвище
+            </td>
+            <td>
+                Голос
+            <td />
+            <td></td>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                @item.id
+            </td>
+            <td>
+                @item.first_name
+            </td>
+            <td>
+                @item.last_name
+            </td>
+            <td>
+
+                <input type="radio" />
+                &nbsp;
+            </td>
+        </tr>
+
+            }
+        
+
+
+
+    </tbody>
+</table>
+
+<div class="container">
+    <button type="button" class="btn btn-default"><a asp-controller="Vote" asp-action="VoteFinal">Підтвердити</a></button>
+</div>
+
+

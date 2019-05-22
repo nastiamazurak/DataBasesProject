@@ -1,0 +1,130 @@
+create table circuit
+(
+	id integer primary key,
+	name varchar(30) not null,
+	center varchar(100) not null,
+	address varchar(75) unique not null
+);
+
+create table district
+(
+	id integer primary key,
+	name varchar(30) not null,
+	address varchar(75) unique not null,
+	circuit_id integer not null references circuit(id)
+);
+
+create table citizen
+(
+	id serial primary key,
+	first_name varchar(30) not null,
+	last_name varchar(30) not null,
+	middle_name varchar(30) not null,
+	birth_date date not null check(extract('year' from birth_date)-extract('year' from current_date)>18),
+	IPN varchar(12) unique not null check(IPN like '\d{12}')
+);
+
+create table election 
+(
+	id serial primary key not null,
+	name varchar(30) not null,
+	year integer not null,
+	tour integer check(tour<3) not null,
+	start_date date not null,
+	end_date date check(end_date>start_date) not null,
+	head_of_CVK integer not null,
+	foreign key (head_of_CVK) references citizen(id)
+);
+
+create table candidate 
+(
+	id serial primary key not null,
+	number integer unique not null check(number>0),
+	election_id integer,
+	citizen_id integer not null,
+	foreign key (election_id) references election(id) on delete cascade,
+	foreign key (citizen_id) references citizen(id)
+);
+
+create table circuit_head
+(
+	id serial primary key not null,
+	election_id integer,
+	circuit_id integer,
+	citizen_id integer not null,
+	foreign key (election_id) references election(id) on delete cascade,
+	foreign key (circuit_id) references circuit(id) on delete cascade,
+	foreign key (citizen_id) references citizen(id)
+);
+
+create table district_head
+(
+	id serial primary key not null,
+	election_id integer,
+	district_id integer,
+	citizen_id integer not null,
+	foreign key (election_id) references election(id) on delete cascade,
+	foreign key (district_id) references district(id) on delete cascade,
+	foreign key (citizen_id) references citizen(id)
+);
+
+create table observer
+(
+	id serial primary key,
+	election_id integer,
+	district_id integer,
+	citizen_id integer not null,
+	candidate_id integer not null,
+	foreign key (election_id) references election(id) on delete cascade,
+	foreign key (district_id) references district(id) on delete cascade,
+	foreign key (citizen_id) references citizen(id),
+	foreign key (candidate_id) references candidate(id)
+);
+
+create table vote 
+(
+	id serial primary key not null,
+	election_id integer,
+	district_id integer,
+	citizen_id integer unique not null,
+	candidate_id integer not null,
+	foreign key (election_id) references election(id) on delete cascade,
+	foreign key (district_id) references district(id) on delete cascade,
+	foreign key (citizen_id) references citizen(id),
+	foreign key (candidate_id) references candidate(id)
+);
+
+create table type 
+(
+	id serial primary key not null,
+	name varchar(30) not null
+);								   
+								   
+create table appeal 
+(
+	id serial primary key,
+	election_id integer,
+	district_id integer,
+	citizen_id integer not null,
+	type_id integer not null,
+	text text not null,
+	foreign key (election_id) references election(id) on delete cascade,
+	foreign key (district_id) references district(id) on delete cascade,
+	foreign key (citizen_id) references citizen(id),
+	foreign key (type_id) references type(id)
+);
+
+
+create table complaint
+(
+	id serial primary key,
+	election_id integer,
+	district_id integer,
+	observer_id integer not null,
+	type_id integer not null,
+	text text not null,
+	foreign key (election_id) references election(id) on delete cascade,
+	foreign key (district_id) references district(id) on delete cascade,
+	foreign key (observer_id) references observer(id),
+	foreign key (type_id) references type(id)
+);
