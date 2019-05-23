@@ -15,7 +15,7 @@
                  {
                      {"electionId", item.Id.ToString()}
                  };
-                 <li><a asp-area="" asp-controller="Vote" asp-action="Vote" asp-all-route-data="param">@Html.DisplayFor(x => item.Name)</a></li>
+                 <li><a asp-area="" asp-controller="Vote" asp-action="Vote" asp-all-route-data="param">@Html.DisplayFor(x => item.Candidate.Citizen.FirstName)</a></li>
                  
              }
 

@@ -5,11 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ElectionProject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElectionProject.Controllers
 {
     public class VoteController: Controller
     {
+        public ElectionContext _context;
         public IActionResult Index()
         {
 
