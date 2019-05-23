@@ -19,6 +19,7 @@
         Рейтинг
     </th>
     </thead>
+<<<<<<< HEAD
     <tbody>
         @foreach (var distr in Model)
         {
@@ -32,3 +33,16 @@
 </table>
 
 <p>Use this area to provide additional information.</p>
+=======
+        <tbody>
+            @foreach (var distr in Model)
+            {
+                <tr>
+                    <td>@distr.first_name</td>
+                    <td>@distr.last_name</td>
+                    <td>@Math.Round(distr.candidate_percent, 2)%</td>
+                </tr>
+            }
+        </tbody>
+</table>
+>>>>>>> 537b23ab62343cc7010e1eb5b86bb4974cc52339
