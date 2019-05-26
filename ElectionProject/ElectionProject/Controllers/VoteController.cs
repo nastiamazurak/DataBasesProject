@@ -28,7 +28,7 @@ namespace ElectionProject.Controllers
         public async Task<IActionResult> Vote(int electionId)
         {
 
-            return View();
+           
             
            
             var vote = (await _context.Candidate.Where(x => x.ElectionId == electionId).ToListAsync()).OrderBy(x => x.Id);
