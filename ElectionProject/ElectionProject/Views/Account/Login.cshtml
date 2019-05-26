@@ -1,0 +1,54 @@
+﻿
+@model OneDayFlat.ViewModels.LoginModel
+@{
+    Layout = "_Layout";
+}
+
+
+<h2>Вхід на сайт</h2>
+
+<a asp-action="Register" asp-controller="Account">Реєстрація</a>
+
+<form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
+    <div class="validation" asp-validation-summary="ModelOnly" />
+    <div>
+        <div class="form-group">
+            <label asp-for="Login">Ввеіть Email</label>
+            <input type="text" asp-for="Login" />
+            <span asp-validation-for="Login" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">Введіть пароль</label>
+            <input asp-for="Password" />
+            <span asp-validation-for="Password" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Ввійти" class="btn" />
+        </div>
+    </div>
+
+</form>
+@*@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Login)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Login)
+        @Html.ValidationMessageFor(model => model.Login)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Password)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Password)
+        @Html.ValidationMessageFor(model => model.Password)
+    </div>
+    <p>
+        <input type="submit" value="Create" />
+    </p>
+
+}*@

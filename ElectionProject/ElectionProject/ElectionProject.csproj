@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190525174645_AddRoles.cs" />
+    <Compile Remove="Migrations\20190525174645_AddRoles.Designer.cs" />
+    <Compile Remove="Migrations\20190525184908_AddRoles.cs" />
+    <Compile Remove="Migrations\20190525184908_AddRoles.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.8">
@@ -17,6 +24,5 @@
 
   <ItemGroup>
     <Folder Include="Services\" />
-    <Folder Include="ModelView\" />
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ElectionProject.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElectionProject.Controllers
 {
@@ -23,7 +24,7 @@ namespace ElectionProject.Controllers
             return View();
         }
 
-       
+        [Authorize]
         public async Task<IActionResult> About()
         {
             var sql = $@"with sum_of_candidates as(select count(id) as sum1 from vote),
