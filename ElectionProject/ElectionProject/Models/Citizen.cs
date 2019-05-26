@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using OneDayFlat.Models;
 
 namespace ElectionProject.Models
 {
-    public partial class Citizen:IdentityUser
+    public partial class Citizen
     {
         public Citizen()
         {
@@ -26,7 +27,8 @@ namespace ElectionProject.Models
         public int? DistrictId { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-
+        public int RoleID { get; set; }
+        public Role Role { get; set; }
         public District District { get; set; }
         public Vote Vote { get; set; }
         public ICollection<Appeal> Appeal { get; set; }

@@ -14,9 +14,10 @@ namespace ElectionProject.Controllers
         private readonly ElectionContext _context;
 
         public VoteController(ElectionContext context)
-        {
+        { 
             _context = context;
         }
+
 
         public IActionResult Index()
         {
