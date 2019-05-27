@@ -2,6 +2,7 @@
 using ElectionProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using OneDayFlat.Models;
 
 namespace ElectionProject
 {
@@ -29,6 +30,7 @@ namespace ElectionProject
         public virtual DbSet<Observer> Observer { get; set; }
         public virtual DbSet<Models.Type> Type { get; set; }
         public virtual DbSet<Vote> Vote { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
         public DbQuery<ElectionResult> ElectionResults { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -531,6 +533,17 @@ namespace ElectionProject
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("vote_election_id_fkey");
             });
+            modelBuilder.Entity<Role>().ToTable("Citizen");
+            modelBuilder.Entity<Role>().ToTable("Role");
+            Role admin = new Role { Id = 1, Name = "admin" };
+            Role citizen = new Role { Id = 2, Name = "citizen" };
+            Role cvkhead = new Role { Id = 3, Name = "cvkhead" };
+            Role circuithead = new Role { Id = 4, Name = "circuithead" };
+            Role districthead = new Role { Id = 5, Name = "districthead" };
+            Role observer = new Role { Id = 6, Name = "observer" };
+            // User adminUser = new User { UserID = 1, Login = adminEmail, Password = adminPassword, RoleID = adminRole.Id };
+
+            modelBuilder.Entity<Role>().HasData(new Role[] { admin, citizen,cvkhead,circuithead,districthead,observer});
         }
     }
 }
