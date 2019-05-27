@@ -29,19 +29,37 @@
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">ЦВК</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
 
-                    <li><a asp-area="" asp-controller="Circuits" asp-action="Index">Округи</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">Результати Виборів</a></li>
-                    <li><a asp-area="" asp-controller="Districts" asp-action="Index">Дільниці</a></li>
-                    <li><a asp-area="" asp-controller="Elections" asp-action="Index">Вибори</a></li>
-                    <li><a asp-area="" asp-controller="Vote" asp-action="Vote">Голосувати</a></li>
-                </ul>
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span></a></li>
-                </ul>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav">
+
+                        <li><a asp-area="" asp-controller="Circuits" asp-action="Index">Округи</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="About">Результати Виборів</a></li>
+                        <li><a asp-area="" asp-controller="Districts" asp-action="Index">Дільниці</a></li>
+                        <li><a asp-area="" asp-controller="Elections" asp-action="Index">Вибори</a></li>
+                        <li><a asp-area="" asp-controller="Vote" asp-action="Index">Голосувати</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><p class="navbar-nav flex-grow-1" style="color:crimson;font-size:medium">Hello,@User.Identity.Name</p>
+                        <li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Logout"><span class="glyphicon glyphicon-log-in"></span></a></li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="nav navbar-nav">
+
+                        <li><a asp-area="" asp-controller="Circuits" asp-action="Index">Округи</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="About">Результати Виборів</a></li>
+                        <li><a asp-area="" asp-controller="Districts" asp-action="Index">Дільниці</a></li>
+                        <li><a asp-area="" asp-controller="Elections" asp-action="Index">Вибори</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a asp-area="" asp-controller="Account" asp-action="Login"><span class="glyphicon glyphicon-user"></span></a></li>
+                    </ul>
+                }
             </div>
         </div>
     </nav>

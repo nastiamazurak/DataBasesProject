@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ElectionProject.Models.Vote>
+﻿@model IEnumerable<ElectionProject.ModelView.VoteResult>
+
 
 @{
     ViewData["Title"] = "Vote";
@@ -9,50 +10,17 @@
 
 <br><br />
 
-<table class="table">
-    <thead>
-        <tr>
-            <td>
-                №
-            </td>
-            <td>
-                Кандидат
-            </td>
-            <td>
-                Голос
-            <td />
-            <td></td>
-        </tr>
-
-    </thead>
-
-    <tbody>
-
-        @foreach (var item in Model)
+    <form asp-action="Vote" method="post">
+       
+        <div class="form-group">
+            @foreach (var candidate in Model)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Candidate.Citizen.LastName)
-                </td>
-                <td>
-                    <input type="checkbox" />
-                    &nbsp;
-                </td>
-            </tr>
-
+                <input type="checkbox" name="candidateId" value="@candidate.id" />@candidate.last_name<br />
+                <input type="hidden" name="citizenEmail" value="@User.Identity.Name" />
+                <input type="hidden" name="electionId" value="@candidate.election_id" />
             }
-        
-
-
-
-    </tbody>
-</table>
-
-<div class="container">
-    <button type="button" class="btn btn-default">Підтвердити</button>
-</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Проголосувати</button>
+    </form>
 
 

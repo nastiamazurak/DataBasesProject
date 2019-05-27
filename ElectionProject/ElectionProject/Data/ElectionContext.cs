@@ -3,6 +3,7 @@ using ElectionProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using OneDayFlat.Models;
+using ElectionProject.ModelView;
 
 namespace ElectionProject
 {
@@ -32,13 +33,16 @@ namespace ElectionProject
         public virtual DbSet<Vote> Vote { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public DbQuery<ElectionResult> ElectionResults { get; set; }
+        public DbQuery<VoteResult> VoteResults { get; set; }
+        public DbQuery<DistrictId> DistrictIds { get; set; }
+        public DbQuery<Insert> Inserts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Election;Username=postgres;Password=wolf");
+                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Election;Username=postgres;Password=bodik2020bodik2000");
             }
         }
 
