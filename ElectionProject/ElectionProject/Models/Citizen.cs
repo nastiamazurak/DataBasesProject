@@ -17,14 +17,14 @@ namespace ElectionProject.Models
             Observer = new HashSet<Observer>();
         }
 
-        public int Id { get; set; }
+        public new int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MiddleName { get; set; }
         public DateTime BirthDate { get; set; }
         public string Ipn { get; set; }
         public int? DistrictId { get; set; }
-        public string Email { get; set; }
+        public override string Email { get; set; }
         public string Password { get; set; }
 
         public District District { get; set; }
