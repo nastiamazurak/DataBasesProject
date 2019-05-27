@@ -4,56 +4,91 @@
 }
 
 
-<form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
+<form asp-action="Register" asp-controller="Account" asp-anti-forgery="true" class="text-center">
     <div class="validation" asp-validation-summary="ModelOnly" />
-    <div>
-        <div>
-            <label asp-for="FirstName">Введіть ім'я</label><br />
-            <input type="text" asp-for="FirstName" />
-            <span asp-validation-for="FirstName" />
+    <div class="row text-center" style="margin-bottom: 50px">
+        <div class="col">
+            <h1>Реєстрація</h1>
         </div>
-        <div>
-            <label asp-for="LastName">Введіть прізвище</label><br />
-            <input type="text" asp-for="LastName" />
-            <span asp-validation-for="LastName" />
+    </div>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="input-group-lg" style="margin-bottom: 20px">
+                <label asp-for="Email">Введіть Email</label>
+                <input type="text" asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" />
+            </div>
         </div>
-        <div>
-            <label asp-for="MiddleName">Введіть по-батькові</label><br />
-            <input type="text" asp-for="MiddleName" />
-            <span asp-validation-for="MiddleName" />
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-2">
+            <div class="input-group-lg" style="margin-bottom: 20px">
+                <label asp-for="FirstName">Введіть ім'я</label>
+                <input type="text" asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" />
+            </div>
         </div>
-        <div>
-            <label asp-for="BirthDate">Введіть дату народження</label><br />
-            <input type="text" asp-for="BirthDate" />
-            <span asp-validation-for="BirthDate" />
+        <div class="col-lg-4">
+            <div class="input-group-lg" style="margin-bottom: 20px">
+                <label asp-for="LastName">Введіть прізвище</label>
+                <input type="text" asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" />
+            </div>
         </div>
-        <div>
-            <label asp-for="Ipn">Введіть ідентифікаційний номер</label><br />
-            <input type="text" asp-for="Ipn" />
-            <span asp-validation-for="Ipn" />
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-2">
+            <div class="input-group-lg" style="margin-bottom: 20px">
+                <label asp-for="MiddleName">Введіть по-батькові</label>
+                <input type="text" asp-for="MiddleName" class="form-control" />
+                <span asp-validation-for="MiddleName" />
+            </div>
         </div>
-        <div>
-            <label asp-for="DistrictId">Введіть номер дільниці</label><br />
-            <input type="text" asp-for="DistrictId" />
-            <span asp-validation-for="DistrictId" />
+        <div class="col-lg-4">
+            <div class="input-group-lg" style="margin-bottom: 20px">
+                <label asp-for="BirthDate">Введіть дату народження</label>
+                <input type="text" asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" />
+            </div>
         </div>
-        <div>
-            <label asp-for="Email">Введіть Email</label><br />
-            <input type="text" asp-for="Email" />
-            <span asp-validation-for="Email" />
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-2">
+            <div class="input-group-lg" style="margin-bottom: 20px">
+                <label asp-for="Ipn">Введіть ідентифікаційний номер</label>
+                <input type="text" asp-for="Ipn" class="form-control" />
+                <span asp-validation-for="Ipn" />
+            </div>
         </div>
-        <div>
-            <label asp-for="Password">Введіть пароль</label><br />
-            <input asp-for="Password" />
-            <span asp-validation-for="Password" />
+        <div class="col-lg-4">
+            <div class="input-group-lg" style="margin-bottom: 20px">
+                <label asp-for="DistrictId">Введіть номер дільниці</label>
+                <input type="text" asp-for="DistrictId" class="form-control" />
+                <span asp-validation-for="DistrictId" />
+            </div>
         </div>
-        <div>
-            <label asp-for="ConfirmPassword">Повторіть пароль</label><br />
-            <input asp-for="ConfirmPassword" />
-            <span asp-validation-for="ConfirmPassword" />
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-2">
+            <div class="input-group-lg" style="margin-bottom: 20px">
+                <label asp-for="Password">Введіть пароль</label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" />
+            </div>
         </div>
-        <div>
-            <input type="submit" value="Реєстрація" />
+        <div class="col-lg-4">
+            <div class="input-group-lg" style="margin-bottom: 20px">
+                <label asp-for="ConfirmPassword">Повторіть пароль</label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" />
+            </div>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="input-group-lg">
+                <input type="submit" value="Зареєструватись" class="btn btn-default" />
+            </div>
         </div>
     </div>
 </form>

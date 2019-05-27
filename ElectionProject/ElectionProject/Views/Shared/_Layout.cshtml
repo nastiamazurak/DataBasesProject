@@ -42,8 +42,7 @@
                         <li><a asp-area="" asp-controller="Vote" asp-action="Index">Голосувати</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><p class="navbar-nav flex-grow-1" style="color:crimson;font-size:medium">Hello,@User.Identity.Name</p>
-                        <li>
+                        <li><a>@User.Identity.Name</a></li>
                         <li><a asp-area="" asp-controller="Account" asp-action="Logout"><span class="glyphicon glyphicon-log-in"></span></a></li>
                     </ul>
                 }

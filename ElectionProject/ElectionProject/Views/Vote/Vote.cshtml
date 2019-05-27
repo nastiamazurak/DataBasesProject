@@ -8,18 +8,22 @@
 
 <br><br />
 
-    <form asp-action="Vote" method="post">
-       
-        <div class="form-group">
-            @foreach (var candidate in Model)
-            {
-                <input type="checkbox" name="candidateId" value="@candidate.id" />@candidate.last_name<br />
-                <input type="hidden" name="citizenEmail" value="@User.Identity.Name" />
-                <input type="hidden" name="electionId" value="@candidate.election_id" />
-            }
-        </div>
+<form asp-action="Vote" method="post">
+
+    <div class="form-group">
+        @foreach (var candidate in Model)
+        {
+            <div class="form-group-lg row" style="margin-bottom: 20px">
+                <div class="col-lg-4">
+                    <input id="@candidate.id" type="radio" name="candidateId" value="@candidate.id" />
+                    <label for="@candidate.id">@candidate.last_name</label>
+                    <input type="hidden" name="citizenEmail" value="@User.Identity.Name" />
+                    <input type="hidden" name="electionId" value="@candidate.election_id" />
+                </div>
+            </div>
+        }
         <button type="submit" class="btn btn-primary">Проголосувати</button>
-    </form>
+</form>
 
 
 

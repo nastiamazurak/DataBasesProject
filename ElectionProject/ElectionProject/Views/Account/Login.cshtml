@@ -1,30 +1,39 @@
-﻿
-@model OneDayFlat.ViewModels.LoginModel
+﻿@model OneDayFlat.ViewModels.LoginModel
 @{
     Layout = "_Layout";
 }
 
 
-<h2>Вхід на сайт</h2>
-
-<a asp-action="Register" asp-controller="Account">Реєстрація</a>
 
 <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
     <div class="validation" asp-validation-summary="ModelOnly" />
-    <div>
-        <div class="form-group">
-            <label asp-for="Login">Ввеіть Email</label>
-            <input type="text" asp-for="Login" />
-            <span asp-validation-for="Login" />
-        </div>
-        <div class="form-group">
-            <label asp-for="Password">Введіть пароль</label>
-            <input asp-for="Password" />
-            <span asp-validation-for="Password" />
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Ввійти" class="btn" />
+    <div class="row text-center" style="margin-bottom: 50px">
+        <div class="col">
+            <h1>Вхід</h1>
         </div>
     </div>
-
+    <div class="form-group-lg row text-center" style="margin-bottom: 20px">
+        <div class="col-lg-4 col-lg-offset-4">
+            <label asp-for="Login">Введіть Email</label>
+            <input type="text" asp-for="Login" class="form-control" placeholder="Email" />
+            <span asp-validation-for="Login" />
+        </div>
+    </div>
+    <div class="form-group-lg row text-center" style="margin-bottom: 20px">
+        <div class="col-lg-4 col-lg-offset-4">
+            <label asp-for="Password">Введіть пароль</label>
+            <input asp-for="Password" class="form-control" placeholder="Пароль" />
+            <span asp-validation-for="Password" />
+        </div>
+    </div>
+    <div class="form-group-lg row text-center">
+        <div class="col-lg-4 col-lg-offset-4">
+            <input type="submit" value="Увійти" class="btn btn-default" />
+        </div>
+    </div>
+    <div class="form-group-lg row text-center">
+        <div class="col-lg-4 col-lg-offset-4" style="padding: 1rem 0;">
+            <a asp-action="Register" asp-controller="Account" class="">Зареєструватись</a>
+        </div>
+    </div>
 </form>
